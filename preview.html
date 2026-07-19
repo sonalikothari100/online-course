@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview: Sonali Kothari Academy</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: "#0A192F",
+            cardBg: "#172A45",
+            cardBorder: "#233554",
+            tealAccent: "#64FFDA",
+            goldAccent: "#FFD700",
+            textPrimary: "#CCD6F6",
+            textSecondary: "#8892B0",
+            success: "#10B981"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            display: ["Outfit", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #0A192F;
+      color: #CCD6F6;
+      font-family: 'Inter', sans-serif;
+    }
+    .glass-panel {
+      background: rgba(23, 42, 69, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(35, 53, 84, 0.5);
+    }
+    .teal-glow {
+      box-shadow: 0 0 20px rgba(100, 255, 218, 0.12);
+    }
+  </style>
+</head>
+<body class="antialiased min-h-screen bg-background text-textPrimary relative pb-16">
+  
+  <!-- Banner informing user about preview -->
+  <div class="bg-tealAccent/10 border-b border-tealAccent/20 text-tealAccent text-xs py-2.5 px-4 text-center font-semibold">
+    ✨ Visual Layout Preview: Double-click this file on your computer anytime to see the design. No hosting or server needed!
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 w-full border-b border-cardBorder/40 bg-[#0A192F]/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <!-- SVG Compass icon -->
+        <svg class="h-6 w-6 text-tealAccent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <polygon points="16.24,7.76 14.12,14.12 7.76,16.24 9.88,9.88" fill="currentColor" opacity="0.2"/>
+          <polygon points="16.24,7.76 14.12,14.12 7.76,16.24 9.88,9.88" />
+        </svg>
+        <span class="font-display font-bold text-lg tracking-wider text-textPrimary uppercase">
+          SONALI KOTHARI
+        </span>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-textSecondary">
+        <a href="#about" class="hover:text-tealAccent transition-colors">About</a>
+        <a href="#curriculum" class="hover:text-tealAccent transition-colors">Curriculum</a>
+        <a href="#testimonials" class="hover:text-tealAccent transition-colors">Breakthroughs</a>
+        <a href="#identity-kit" class="hover:text-tealAccent transition-colors">Free Tools</a>
+      </nav>
+
+      <div class="flex items-center gap-4">
+        <a href="preview-login.html" class="text-sm font-semibold text-textSecondary hover:text-textPrimary transition-colors">Login</a>
+        <a href="preview-signup.html" class="px-4 py-2 text-xs font-semibold rounded-lg bg-tealAccent text-background hover:bg-tealAccent/80 transition-all font-display shadow-lg teal-glow">Join Free</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-12 pb-20 md:pt-24 md:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-7 space-y-6 text-left">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tealAccent/10 text-tealAccent text-xs font-semibold border border-tealAccent/20">
+          ✨ Calming Aligned Coaching Portal
+        </div>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight font-display text-textPrimary leading-tight">
+          Shift Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-tealAccent to-cyan-300">Identity</span>. <br />
+          Elevate Your Habits.
+        </h1>
+        <p class="text-base sm:text-lg text-textSecondary max-w-xl leading-relaxed">
+          Design a calm mindset, calibrate your daily frequencies, and unlock professional growth using our custom-designed secure curriculum.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 pt-2">
+          <a href="preview-signup.html" class="flex items-center justify-center gap-1.5 px-6 py-3.5 bg-tealAccent text-background rounded-xl font-semibold text-sm hover:bg-tealAccent/80 transition-all shadow-lg font-display teal-glow">
+            Get Free Identity Kit
+          </a>
+          <a href="#curriculum" class="flex items-center justify-center gap-1 px-6 py-3.5 bg-cardBg/50 text-textPrimary border border-cardBorder rounded-xl font-semibold text-sm hover:bg-cardBg transition-all font-display">
+            View 10-Part Syllabus
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 relative">
+        <div class="glass-panel p-6 rounded-2xl border border-cardBorder shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-tealAccent/5 blur-xl pointer-events-none"></div>
+          <div class="flex items-center justify-between pb-6 border-b border-cardBorder/60">
+            <div class="flex items-center gap-3">
+              <div class="h-10 w-10 rounded-full bg-tealAccent/10 flex items-center justify-center text-tealAccent">
+                🧭
+              </div>
+              <div class="text-left">
+                <h4 class="font-bold text-sm text-textPrimary">Identity Shift Course</h4>
+                <p class="text-xs text-textSecondary">Active Academy Portal</p>
+              </div>
+            </div>
+            <div class="h-2.5 w-2.5 rounded-full bg-tealAccent animate-pulse"></div>
+          </div>
+          <div class="space-y-4 pt-6 text-left">
+            <div class="p-4 bg-background/50 rounded-xl border border-cardBorder/60 flex items-center justify-between">
+              <span class="text-xs font-semibold text-textSecondary">Syllabus Length</span>
+              <span class="text-xs font-bold text-tealAccent flex items-center gap-1">📖 10 Video Sessions</span>
+            </div>
+            <div class="p-4 bg-background/50 rounded-xl border border-cardBorder/60 flex items-center justify-between">
+              <span class="text-xs font-semibold text-textSecondary">Success Rate</span>
+              <span class="text-xs font-bold text-goldAccent flex items-center gap-1">👥 97% Aligned Shift</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stat Blocks -->
+  <section class="bg-cardBg/20 border-y border-cardBorder/40 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      <div class="space-y-2">
+        <div class="text-3xl font-bold font-display text-tealAccent">100% Secure</div>
+        <div class="text-xs font-semibold uppercase tracking-wider text-textSecondary">Protected Video Streaming</div>
+      </div>
+      <div class="space-y-2 border-y md:border-y-0 md:border-x border-cardBorder/30 py-6 md:py-0">
+        <div class="text-3xl font-bold font-display text-goldAccent">Gamified UI</div>
+        <div class="text-xs font-semibold uppercase tracking-wider text-textSecondary">Badges & Streaks</div>
+      </div>
+      <div class="space-y-2">
+        <div class="text-3xl font-bold font-display text-textPrimary">25+ Stories</div>
+        <div class="text-xs font-semibold uppercase tracking-wider text-textSecondary">Verified Video Breakthroughs</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Curriculum -->
+  <section id="curriculum" class="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto space-y-4 mb-16">
+      <h2 class="text-3xl sm:text-4xl font-bold font-display text-textPrimary">Curriculum Structure</h2>
+      <p class="text-sm text-textSecondary leading-relaxed">
+        Ten video lectures split across 3 calming modules. Complete them fully to unlock achievement badges.
+      </p>
+    </div>
+
+    <div class="glass-panel p-8 rounded-2xl border border-cardBorder shadow-xl text-left">
+      <h3 class="text-xl font-bold text-tealAccent font-display mb-2">Align & Awaken: The Identity Shift Program</h3>
+      <p class="text-sm text-textSecondary leading-relaxed mb-6">
+        A premium 10-part masterclass designed to rewire subconscious blocks and raise your daily nervous system threshold.
+      </p>
+      
+      <div class="space-y-6">
+        <!-- Module 1 -->
+        <div class="p-5 bg-background/40 border border-cardBorder/60 rounded-xl space-y-4">
+          <h4 class="font-display font-semibold text-sm text-textPrimary flex items-center gap-2">
+            <span class="h-5 w-5 rounded bg-tealAccent/15 text-tealAccent text-xs flex items-center justify-center font-bold">1</span>
+            Module 1: Subconscious Grounding & Clarity
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pl-7">
+            <div class="p-3 bg-cardBg/45 border border-cardBorder/40 rounded-lg flex items-center justify-between text-xs text-textSecondary">
+              <span class="font-medium text-textPrimary">1. Introduction to Aligned Living</span>
+              <span class="px-2 py-0.5 bg-background border border-cardBorder rounded text-[10px]">6:15 mins</span>
+            </div>
+            <div class="p-3 bg-cardBg/45 border border-cardBorder/40 rounded-lg flex items-center justify-between text-xs text-textSecondary">
+              <span class="font-medium text-textPrimary">2. Deconstructing Subconscious Blocks</span>
+              <span class="px-2 py-0.5 bg-background border border-cardBorder rounded text-[10px]">7:40 mins</span>
+            </div>
+            <div class="p-3 bg-cardBg/45 border border-cardBorder/40 rounded-lg flex items-center justify-between text-xs text-textSecondary">
+              <span class="font-medium text-textPrimary">3. The Frequency Threshold</span>
+              <span class="px-2 py-0.5 bg-background border border-cardBorder rounded text-[10px]">5:20 mins</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 2 -->
+        <div class="p-5 bg-background/40 border border-cardBorder/60 rounded-xl space-y-4">
+          <h4 class="font-display font-semibold text-sm text-textPrimary flex items-center gap-2">
+            <span class="h-5 w-5 rounded bg-tealAccent/15 text-tealAccent text-xs flex items-center justify-center font-bold">2</span>
+            Module 2: Daily Aligned Routines (Streaks & Habitation)
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pl-7">
+            <div class="p-3 bg-cardBg/45 border border-cardBorder/40 rounded-lg flex items-center justify-between text-xs text-textSecondary">
+              <span class="font-medium text-textPrimary">4. Establishing the Morning Calibration</span>
+              <span class="px-2 py-0.5 bg-background border border-cardBorder rounded text-[10px]">6:45 mins</span>
+            </div>
+            <div class="p-3 bg-cardBg/45 border border-cardBorder/40 rounded-lg flex items-center justify-between text-xs text-textSecondary">
+              <span class="font-medium text-textPrimary">5. Calming Breathwork & Body Activation</span>
+              <span class="px-2 py-0.5 bg-background border border-cardBorder rounded text-[10px]">7:10 mins</span>
+            </div>
+            <div class="p-3 bg-cardBg/45 border border-cardBorder/40 rounded-lg flex items-center justify-between text-xs text-textSecondary">
+              <span class="font-medium text-textPrimary">6. Navigating Mid-Day Burnout</span>
+              <span class="px-2 py-0.5 bg-background border border-cardBorder rounded text-[10px]">5:50 mins</span>
+            </div>
+            <div class="p-3 bg-cardBg/45 border border-cardBorder/40 rounded-lg flex items-center justify-between text-xs text-textSecondary">
+              <span class="font-medium text-textPrimary">7. Nightly Gratitude Re-programming</span>
+              <span class="px-2 py-0.5 bg-background border border-cardBorder rounded text-[10px]">6:05 mins</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 3 -->
+        <div class="p-5 bg-background/40 border border-cardBorder/60 rounded-xl space-y-4">
+          <h4 class="font-display font-semibold text-sm text-textPrimary flex items-center gap-2">
+            <span class="h-5 w-5 rounded bg-tealAccent/15 text-tealAccent text-xs flex items-center justify-center font-bold">3</span>
+            Module 3: Elevating Your Outer Identity
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pl-7">
+            <div class="p-3 bg-cardBg/45 border border-cardBorder/40 rounded-lg flex items-center justify-between text-xs text-textSecondary">
+              <span class="font-medium text-textPrimary">8. Boundaries as Energy Safeguards</span>
+              <span class="px-2 py-0.5 bg-background border border-cardBorder rounded text-[10px]">7:15 mins</span>
+            </div>
+            <div class="p-3 bg-cardBg/45 border border-cardBorder/40 rounded-lg flex items-center justify-between text-xs text-textSecondary">
+              <span class="font-medium text-textPrimary">9. Integration and Aligned Community</span>
+              <span class="px-2 py-0.5 bg-background border border-cardBorder rounded text-[10px]">5:35 mins</span>
+            </div>
+            <div class="p-3 bg-cardBg/45 border border-cardBorder/40 rounded-lg flex items-center justify-between text-xs text-textSecondary">
+              <span class="font-medium text-textPrimary">10. The Graduation: Sustaining Your Shift</span>
+              <span class="px-2 py-0.5 bg-background border border-cardBorder rounded text-[10px]">8:20 mins</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials" class="py-20 bg-cardBg/10 border-t border-cardBorder/40 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto space-y-4 mb-16">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-goldAccent/10 text-goldAccent text-xs font-semibold border border-goldAccent/20">
+          🏆 Verified Client Journeys
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-bold font-display text-textPrimary">Breakthrough Board</h2>
+        <p class="text-sm text-textSecondary leading-relaxed">
+          Stories of nervous system shift and identity upgrades from our closed student network.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Testimonial 1 -->
+        <div class="glass-panel p-6 rounded-2xl border border-tealAccent/30 text-left flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h4 class="font-bold text-sm text-textPrimary font-display">Priya Sharma</h4>
+                <p class="text-[11px] text-textSecondary">Corporate Professional</p>
+              </div>
+              <div class="flex text-goldAccent gap-0.5">⭐⭐⭐⭐⭐</div>
+            </div>
+            <div class="relative aspect-video w-full rounded-lg bg-background overflow-hidden border border-cardBorder/60 mb-4 group">
+              <div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent z-10"></div>
+              <div class="absolute inset-0 flex items-center justify-center z-20">
+                <button onclick="playVideo('https://www.youtube.com/embed/EngW7tLk6R8')" class="h-10 w-10 rounded-full bg-tealAccent text-background flex items-center justify-center shadow-lg transform hover:scale-110 transition-all cursor-pointer">
+                  ▶
+                </button>
+              </div>
+              <div class="absolute bottom-2 left-2 z-20 text-[10px] font-semibold text-tealAccent flex items-center gap-1 bg-background/60 px-2 py-0.5 rounded-full border border-tealAccent/20">
+                Play Video Win
+              </div>
+            </div>
+            <p class="text-xs text-textSecondary leading-relaxed italic mb-4">
+              "I was suffering from severe professional burnout as an IT manager. Applying the morning calibration sequence helped me regain my peace of mind and focus."
+            </p>
+          </div>
+          <div class="pt-3 border-t border-cardBorder/40 flex items-center justify-between text-[10px] text-textSecondary font-semibold">
+            <span class="flex items-center gap-1 text-tealAccent">✓ Verified Breakthrough</span>
+            <span>Enrolled Student</span>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="glass-panel p-6 rounded-2xl border border-cardBorder/60 text-left flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h4 class="font-bold text-sm text-textPrimary font-display">Anjali Desai</h4>
+                <p class="text-[11px] text-textSecondary">Homemaker</p>
+              </div>
+              <div class="flex text-goldAccent gap-0.5">⭐⭐⭐⭐⭐</div>
+            </div>
+            <p class="text-xs text-textSecondary leading-relaxed italic mb-4">
+              "The identity shift module changed how I speak to myself. I unlocked limiting beliefs I had since childhood. Truly life-transforming!"
+            </p>
+          </div>
+          <div class="pt-3 border-t border-cardBorder/40 flex items-center justify-between text-[10px] text-textSecondary font-semibold">
+            <span class="flex items-center gap-1 text-tealAccent">✓ Verified Breakthrough</span>
+            <span>Enrolled Student</span>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="glass-panel p-6 rounded-2xl border border-cardBorder/60 text-left flex flex-col justify-between hover:-translate-y-1 transition-all duration-300">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h4 class="font-bold text-sm text-textPrimary font-display">Neha Patel</h4>
+                <p class="text-[11px] text-textSecondary">Yoga Practitioner</p>
+              </div>
+              <div class="flex text-goldAccent gap-0.5">⭐⭐⭐⭐⭐</div>
+            </div>
+            <p class="text-xs text-textSecondary leading-relaxed italic mb-4">
+              "Completing my 15-day streak felt amazing! The badges kept me motivated daily, and the secure player is beautiful."
+            </p>
+          </div>
+          <div class="pt-3 border-t border-cardBorder/40 flex items-center justify-between text-[10px] text-textSecondary font-semibold">
+            <span class="flex items-center gap-1 text-tealAccent">✓ Verified Breakthrough</span>
+            <span>Enrolled Student</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lead Capture -->
+  <section id="identity-kit" class="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+    <div class="glass-panel p-8 sm:p-12 rounded-3xl border border-cardBorder shadow-2xl relative overflow-hidden text-center space-y-6">
+      <h2 class="text-3xl font-bold font-display text-textPrimary">Get Sonali's Free Identity Kit</h2>
+      <p class="text-sm text-textSecondary max-w-lg mx-auto leading-relaxed">
+        Access free workbook routines, habit sheets, and subconscious calibration worksheets. Join the network to start tracking your daily progress.
+      </p>
+      <div class="pt-4">
+        <a href="preview-signup.html" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-tealAccent text-background rounded-xl font-semibold text-sm hover:bg-tealAccent/80 transition-all shadow-lg font-display teal-glow">
+          Access Free Tools
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video Lightbox Overlay -->
+  <div id="videoLightbox" class="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm p-4 hidden">
+    <div class="relative w-full max-w-3xl aspect-video glass-panel rounded-2xl overflow-hidden border border-cardBorder shadow-2xl">
+      <button onclick="closeVideo()" class="absolute top-4 right-4 z-50 h-8 w-8 rounded-full bg-background/80 border border-cardBorder flex items-center justify-center text-textPrimary hover:bg-background transition-all cursor-pointer">
+        ✕
+      </button>
+      <iframe id="lightboxIframe" src="" title="Breakthrough Video Player" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <script>
+    function playVideo(url) {
+      document.getElementById('lightboxIframe').src = url;
+      document.getElementById('videoLightbox').classList.remove('hidden');
+    }
+    function closeVideo() {
+      document.getElementById('lightboxIframe').src = '';
+      document.getElementById('videoLightbox').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
