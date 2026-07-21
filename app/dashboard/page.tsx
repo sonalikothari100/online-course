@@ -28,21 +28,26 @@ export default function StudentDashboard() {
       router.push('/login');
       return;
     }
-    db.initialize();
-    setCourses(db.getCourses());
-    
-    // Load breakthroughs feed
-    const feed = db.getTestimonials().filter(t => t.approved);
-    setCommunityFeed(feed);
+    const loadData = async () => {
+      await db.initialize();
+      const coursesData = await db.getCourses();
+      setCourses(coursesData);
+      
+      // Load breakthroughs feed
+      const testimonialsData = await db.getTestimonials();
+      const feed = testimonialsData.filter(t => t.approved);
+      setCommunityFeed(feed);
+    };
+    loadData().catch(console.error);
   }, [user, router]);
 
   if (!user) return null;
 
-  const handlePostSubmit = (e: React.FormEvent) => {
+  const handlePostSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newPost.trim()) return;
 
-    db.addTestimonial({
+    await db.addTestimonial({
       clientName: user.fullName,
       textContent: newPost,
       rating: 5,
@@ -55,14 +60,18 @@ export default function StudentDashboard() {
       user.badges.push('breakthrough_queen');
     }
     
-    db.updateUser(user);
-    refreshUser();
+    await db.updateUser(user);
+    await refreshUser();
 
     setNewPost('');
     setPostSuccess(true);
+    
+    const testimonialsData = await db.getTestimonials();
+    const feed = testimonialsData.filter(t => t.approved);
+    
     setTimeout(() => {
       setPostSuccess(false);
-      setCommunityFeed(db.getTestimonials().filter(t => t.approved));
+      setCommunityFeed(feed);
     }, 1500);
   };
 

@@ -25,8 +25,8 @@ export default function SignupPage() {
     setError('');
 
     try {
-      db.initialize();
-      const users = db.getUsers();
+      await db.initialize();
+      const users = await db.getUsers();
       const exists = users.some(u => u.email.toLowerCase() === email.toLowerCase());
 
       if (exists) {
@@ -36,10 +36,9 @@ export default function SignupPage() {
       }
 
       const pendingLead = {
-        id: `user-${Date.now()}`,
+        id: `lead-${Date.now()}`,
         email: email,
         fullName: fullName,
-        password: '',
         role: 'lead' as const,
         points: 0,
         streak: 0,
@@ -47,8 +46,7 @@ export default function SignupPage() {
         completedLessons: []
       };
 
-      const updatedUsers = [...users, pendingLead];
-      localStorage.setItem('users', JSON.stringify(updatedUsers));
+      await db.updateUser(pendingLead);
       
       setSuccess(true);
     } catch (err) {

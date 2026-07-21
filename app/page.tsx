@@ -16,11 +16,17 @@ export default function LandingPage() {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
   useEffect(() => {
-    db.initialize();
-    setCourses(db.getCourses());
-    const items = db.getTestimonials().filter(t => t.approved);
-    const sorted = [...items].sort((a, b) => (a.pinned === b.pinned ? 0 : a.pinned ? -1 : 1));
-    setTestimonials(sorted);
+    const loadData = async () => {
+      await db.initialize();
+      const coursesData = await db.getCourses();
+      setCourses(coursesData);
+      
+      const testimonialsData = await db.getTestimonials();
+      const items = testimonialsData.filter(t => t.approved);
+      const sorted = [...items].sort((a, b) => (a.pinned === b.pinned ? 0 : a.pinned ? -1 : 1));
+      setTestimonials(sorted);
+    };
+    loadData().catch(console.error);
   }, []);
 
   return (

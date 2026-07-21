@@ -9,6 +9,8 @@ import {
   ShieldAlert, BookOpen, Users, Sparkles, Plus, 
   Trash2, Pin, CheckCircle, XCircle, ChevronLeft, ShieldCheck, Flame, Award, Lock, Save, FolderPlus, Eye, X
 } from 'lucide-react';
+import { auth } from '@/lib/firebase';
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 interface RecycleBinItem {
   id: string;
@@ -19,7 +21,7 @@ interface RecycleBinItem {
 }
 
 export default function AdminDashboardPage() {
-  const { user } = useAuth();
+  const { user, signup } = useAuth();
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState<'content' | 'students' | 'breakthroughs' | 'trash'>('content');
@@ -66,12 +68,15 @@ export default function AdminDashboardPage() {
       return;
     }
 
-    db.initialize();
-    loadAdminData();
+    const init = async () => {
+      await db.initialize();
+      await loadAdminData();
+    };
+    init().catch(console.error);
   }, [user, router]);
 
-  const loadAdminData = () => {
-    const list = db.getCourses();
+  const loadAdminData = async () => {
+    const list = await db.getCourses();
     setCourses(list);
     if (list.length > 0) {
       setSelectedCourseId(list[0].id);
@@ -79,8 +84,11 @@ export default function AdminDashboardPage() {
         setSelectedModuleId(list[0].modules[0].id);
       }
     }
-    setStudents(db.getUsers());
-    setBreakthroughs(db.getTestimonials());
+    const usersList = await db.getUsers();
+    setStudents(usersList);
+    
+    const testimonialsList = await db.getTestimonials();
+    setBreakthroughs(testimonialsList);
 
     // Load Recycle Bin from localStorage
     const binStr = localStorage.getItem('recycleBin');
@@ -119,7 +127,7 @@ export default function AdminDashboardPage() {
   };
 
   // Handle creating a new course
-  const handleCreateCourse = (e: React.FormEvent) => {
+  const handleCreateCourse = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newCourseTitle || !newCourseDesc) return;
 
@@ -133,7 +141,7 @@ export default function AdminDashboardPage() {
     };
 
     const updatedCourses = [...courses, newCourse];
-    db.updateCourses(updatedCourses);
+    await db.updateCourses(updatedCourses);
     setCourses(updatedCourses);
 
     // Default selection to new course
@@ -148,7 +156,7 @@ export default function AdminDashboardPage() {
   };
 
   // Handle deleting a course (moves to Recycle Bin)
-  const handleDeleteCourse = (courseId: string) => {
+  const handleDeleteCourse = async (courseId: string) => {
     const courseToDelete = courses.find(c => c.id === courseId);
     if (!courseToDelete) return;
 
@@ -162,7 +170,7 @@ export default function AdminDashboardPage() {
     };
 
     const updatedCourses = courses.filter(c => c.id !== courseId);
-    db.updateCourses(updatedCourses);
+    await db.updateCourses(updatedCourses);
     setCourses(updatedCourses);
     saveRecycleBin([...recycleBin, newItem]);
 
@@ -176,7 +184,7 @@ export default function AdminDashboardPage() {
   };
 
   // Handle adding a new module
-  const handleAddModule = (e: React.FormEvent) => {
+  const handleAddModule = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newModuleTitle || !selectedCourseId) return;
 
@@ -197,7 +205,7 @@ export default function AdminDashboardPage() {
       return course;
     });
 
-    db.updateCourses(updatedCourses);
+    await db.updateCourses(updatedCourses);
     setCourses(updatedCourses);
 
     // Set active module to newly created one
@@ -212,7 +220,7 @@ export default function AdminDashboardPage() {
   };
 
   // Handle deleting a module (moves to Recycle Bin)
-  const handleDeleteModule = (moduleId: string) => {
+  const handleDeleteModule = async (moduleId: string) => {
     const activeCourse = courses.find(c => c.id === selectedCourseId);
     if (!activeCourse) return;
 
@@ -237,7 +245,7 @@ export default function AdminDashboardPage() {
       return course;
     });
 
-    db.updateCourses(updatedCourses);
+    await db.updateCourses(updatedCourses);
     setCourses(updatedCourses);
     saveRecycleBin([...recycleBin, newItem]);
 
@@ -249,7 +257,7 @@ export default function AdminDashboardPage() {
   };
 
   // Handle restoring items
-  const handleRestoreItem = (item: RecycleBinItem) => {
+  const handleRestoreItem = async (item: RecycleBinItem) => {
     if (item.type === 'course') {
       const restoredCourse = item.data as Course;
       // Prevent duplicates
@@ -258,7 +266,7 @@ export default function AdminDashboardPage() {
         return;
       }
       const updatedCourses = [...courses, restoredCourse];
-      db.updateCourses(updatedCourses);
+      await db.updateCourses(updatedCourses);
       setCourses(updatedCourses);
       setSelectedCourseId(restoredCourse.id);
     } else {
@@ -273,7 +281,7 @@ export default function AdminDashboardPage() {
         }
         return course;
       });
-      db.updateCourses(updatedCourses);
+      await db.updateCourses(updatedCourses);
       setCourses(updatedCourses);
       setSelectedCourseId(restoredMod.courseId);
       setSelectedModuleId(restoredMod.id);
@@ -291,7 +299,7 @@ export default function AdminDashboardPage() {
   };
 
   // Handle adding a new video lesson to a module
-  const handleAddLesson = (e: React.FormEvent) => {
+  const handleAddLesson = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newLessonTitle || !newLessonUrl || !selectedModuleId) return;
 
@@ -324,7 +332,7 @@ export default function AdminDashboardPage() {
       return course;
     });
 
-    db.updateCourses(updatedCourses);
+    await db.updateCourses(updatedCourses);
     setCourses(updatedCourses);
 
     // Reset inputs
@@ -337,7 +345,7 @@ export default function AdminDashboardPage() {
   };
 
   // Delete a lesson
-  const handleDeleteLesson = (moduleId: string, lessonId: string) => {
+  const handleDeleteLesson = async (moduleId: string, lessonId: string) => {
     const updatedCourses = courses.map(course => {
       if (course.id === selectedCourseId) {
         return {
@@ -356,37 +364,23 @@ export default function AdminDashboardPage() {
       return course;
     });
 
-    db.updateCourses(updatedCourses);
+    await db.updateCourses(updatedCourses);
     setCourses(updatedCourses);
   };
 
   // Manually create student account
-  const handleCreateStudent = (e: React.FormEvent) => {
+  const handleCreateStudent = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newStudentName || !newStudentEmail || !newStudentPassword) return;
 
-    const users = db.getUsers();
-    const exists = users.some(u => u.email.toLowerCase() === newStudentEmail.toLowerCase());
-
-    if (exists) {
-      alert("An account with this email is already registered!");
+    const signupSuccess = await signup(newStudentName, newStudentEmail, newStudentPassword);
+    if (!signupSuccess) {
+      alert("Failed to create student account. The email may already be registered or invalid.");
       return;
     }
 
-    const newStudent: User = {
-      id: `user-${Date.now()}`,
-      email: newStudentEmail,
-      fullName: newStudentName,
-      password: newStudentPassword,
-      role: 'student', // Admin created students default to full course access
-      points: 10,
-      streak: 1,
-      badges: ['first_step'],
-      completedLessons: []
-    };
-
-    localStorage.setItem('users', JSON.stringify([...users, newStudent]));
-    setStudents(db.getUsers());
+    const usersList = await db.getUsers();
+    setStudents(usersList);
 
     setNewStudentName('');
     setNewStudentEmail('');
@@ -396,39 +390,40 @@ export default function AdminDashboardPage() {
   };
 
   // Toggle student role (Grant or Revoke paid access)
-  const handleToggleUserRole = (student: User) => {
+  const handleToggleUserRole = async (student: User) => {
     const newRole = student.role === 'student' ? 'lead' : 'student';
-    // If activating access, ensure a default password exists if empty
     const updated = {
       ...student,
-      role: newRole as any,
-      password: student.password || 'student123'
+      role: newRole as any
     };
-    db.updateUser(updated);
-    setStudents(db.getUsers());
+    await db.updateUser(updated);
+    const usersList = await db.getUsers();
+    setStudents(usersList);
   };
 
-  // Update specific student's password
-  const handleUpdatePassword = (studentId: string, newPass: string) => {
-    const users = db.getUsers();
-    const index = users.findIndex(u => u.id === studentId);
-    if (index !== -1) {
-      users[index].password = newPass;
-      localStorage.setItem('users', JSON.stringify(users));
-      setStudents(db.getUsers());
+  // Send student password reset email
+  const handleSendResetEmail = async (email: string) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert(`Password reset link successfully emailed to: ${email}`);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to send password reset email.");
     }
   };
 
   // Approve Breakthrough
-  const handleApproveBreakthrough = (id: string, isApproved: boolean) => {
-    db.approveTestimonial(id, isApproved);
-    setBreakthroughs(db.getTestimonials());
+  const handleApproveBreakthrough = async (id: string, isApproved: boolean) => {
+    await db.approveTestimonial(id, isApproved);
+    const list = await db.getTestimonials();
+    setBreakthroughs(list);
   };
 
   // Pin Breakthrough to homepage
-  const handlePinBreakthrough = (id: string, isPinned: boolean) => {
-    db.pinTestimonial(id, isPinned);
-    setBreakthroughs(db.getTestimonials());
+  const handlePinBreakthrough = async (id: string, isPinned: boolean) => {
+    await db.pinTestimonial(id, isPinned);
+    const list = await db.getTestimonials();
+    setBreakthroughs(list);
   };
 
   // Fetch modules for currently selected course
@@ -904,16 +899,12 @@ export default function AdminDashboardPage() {
                           {/* Editable Password field */}
                           <td className="py-4 px-4 text-left">
                             {student.role !== 'admin' ? (
-                              <div className="flex items-center gap-1">
-                                <Lock className="h-3.5 w-3.5 text-textSecondary shrink-0" />
-                                <input
-                                  type="text"
-                                  value={student.password || ''}
-                                  onChange={(e) => handleUpdatePassword(student.id, e.target.value)}
-                                  placeholder="unset (pending lead)"
-                                  className="bg-background/80 border border-cardBorder rounded px-2 py-1 text-xs w-28 text-textPrimary focus:outline-none focus:border-plumAccent font-mono"
-                                />
-                              </div>
+                              <button
+                                onClick={() => handleSendResetEmail(student.email)}
+                                className="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-plumAccent/10 text-plumAccent border border-plumAccent/20 hover:bg-plumAccent/20 transition-all font-display shrink-0"
+                              >
+                                Send Reset Link
+                              </button>
                             ) : (
                               <span className="text-peachAccent font-mono">••••••••</span>
                             )}

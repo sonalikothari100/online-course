@@ -41,27 +41,31 @@ export default function CoursePlayerPage({ params }: Params) {
       return;
     }
 
-    db.initialize();
-    const coursesList = db.getCourses();
-    const foundCourse = coursesList.find(c => c.id === params.id);
-    
-    if (!foundCourse) {
-      router.push('/dashboard');
-      return;
-    }
+    const loadData = async () => {
+      await db.initialize();
+      const coursesList = await db.getCourses();
+      const foundCourse = coursesList.find(c => c.id === params.id);
+      
+      if (!foundCourse) {
+        router.push('/dashboard');
+        return;
+      }
 
-    // Security Check: If a 'lead' tries to access a premium course, block them
-    if (user.role !== 'admin' && user.role !== 'student' && foundCourse.id !== 'course-free') {
-      router.push('/dashboard');
-      return;
-    }
+      // Security Check: If a 'lead' tries to access a premium course, block them
+      if (user.role !== 'admin' && user.role !== 'student' && foundCourse.id !== 'course-free') {
+        router.push('/dashboard');
+        return;
+      }
 
-    setCourse(foundCourse);
+      setCourse(foundCourse);
 
-    // Default to the first lesson in the first module
-    if (foundCourse.modules.length > 0 && foundCourse.modules[0].lessons.length > 0) {
-      setActiveLesson(foundCourse.modules[0].lessons[0]);
-    }
+      // Default to the first lesson in the first module
+      if (foundCourse.modules.length > 0 && foundCourse.modules[0].lessons.length > 0) {
+        setActiveLesson(foundCourse.modules[0].lessons[0]);
+      }
+    };
+
+    loadData().catch(console.error);
   }, [user, params.id, router]);
 
   // Load custom comments for the active lesson
@@ -107,14 +111,14 @@ export default function CoursePlayerPage({ params }: Params) {
   };
 
   // Triggers video completion points and fires the auto-advance countdown
-  const handleSimulateVideoCompletion = () => {
+  const handleSimulateVideoCompletion = async () => {
     if (user.completedLessons.includes(activeLesson.id)) {
       triggerAutoAdvance();
       return;
     }
 
-    const result = db.completeLesson(user.id, activeLesson.id);
-    refreshUser();
+    const result = await db.completeLesson(user.id, activeLesson.id);
+    await refreshUser();
 
     if (result.pointsAdded > 0) {
       setRewardNotification({
@@ -159,11 +163,11 @@ export default function CoursePlayerPage({ params }: Params) {
     setNewComment('');
   };
 
-  const handleBreakthroughSubmit = (e: React.FormEvent) => {
+  const handleBreakthroughSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!breakthroughText.trim()) return;
 
-    db.addTestimonial({
+    await db.addTestimonial({
       clientName: user.fullName,
       textContent: breakthroughText,
       rating: 5,
@@ -174,8 +178,8 @@ export default function CoursePlayerPage({ params }: Params) {
     if (!user.badges.includes('breakthrough_queen')) {
       user.badges.push('breakthrough_queen');
     }
-    db.updateUser(user);
-    refreshUser();
+    await db.updateUser(user);
+    await refreshUser();
 
     setBreakthroughText('');
     setBreakthroughSuccess(true);
@@ -186,14 +190,14 @@ export default function CoursePlayerPage({ params }: Params) {
 
   const handleRecordVideoBreakthrough = () => {
     setIsSimulatingVideoRecord(true);
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsSimulatingVideoRecord(false);
       user.points += 30; // +30 points for recording video win
       if (!user.badges.includes('alignment_champion')) {
         user.badges.push('alignment_champion');
       }
-      db.updateUser(user);
-      refreshUser();
+      await db.updateUser(user);
+      await refreshUser();
       
       setBreakthroughSuccess(true);
       setTimeout(() => {

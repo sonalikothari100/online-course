@@ -1,7 +1,17 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { db, User } from './db';
+import { db, User, Badge, BADGES } from './db';
+import { auth, firestore } from './firebase';
+import { 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  getAuth
+} from 'firebase/auth';
+import { initializeApp, deleteApp } from 'firebase/app';
+import { doc, setDoc } from 'firebase/firestore';
 
 interface AuthContextType {
   user: User | null;
@@ -9,7 +19,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   signup: (fullName: string, email: string, password?: string) => Promise<boolean>;
-  refreshUser: () => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,71 +29,141 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    db.initialize();
-    const storedUserId = localStorage.getItem('current_user_id');
-    if (storedUserId) {
-      const foundUser = db.getUser(storedUserId);
-      if (foundUser) {
+    // 1. Initialize DB (Seeding default courses/testimonials in Firestore)
+    db.initialize().catch(console.error);
+
+    // 2. Track Firebase Auth state
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        // Fetch Firestore profile document
+        let foundUser = await db.getUser(firebaseUser.uid);
+        
+        if (!foundUser) {
+          // Fallback: If user is authenticated in Firebase Auth but has no Firestore doc, create a default student
+          const todayStr = new Date().toISOString().split('T')[0];
+          foundUser = {
+            id: firebaseUser.uid,
+            email: firebaseUser.email || '',
+            fullName: firebaseUser.displayName || 'Student',
+            role: 'student',
+            points: 10,
+            streak: 1,
+            lastLoginDate: todayStr,
+            badges: ['first_step'],
+            completedLessons: []
+          };
+          await db.updateUser(foundUser);
+        } else {
+          // Trigger daily login streak logic
+          await db.triggerStreakLogin(firebaseUser.uid);
+          // Reload user after streak calculation
+          const refreshed = await db.getUser(firebaseUser.uid);
+          if (refreshed) foundUser = refreshed;
+        }
+        
         setUser(foundUser);
-        // Automatically check/update daily login streak on active session load
-        db.triggerStreakLogin(foundUser.id);
-        const updatedUser = db.getUser(foundUser.id);
-        if (updatedUser) setUser(updatedUser);
+      } else {
+        setUser(null);
       }
-    }
-    setLoading(false);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    const users = db.getUsers();
-    // Validate both email and password match in the local database
-    const foundUser = users.find(
-      u => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-    );
+    try {
+      // Admin Auto-Registration Check:
+      // If logging in as admin and it is the first time (does not exist in Firebase Auth),
+      // we auto-create the account to preserve out-of-the-box local login functionality.
+      if (email.toLowerCase() === 'sonali@kothari.com' && password === 'sonaliadmin123') {
+        try {
+          await signInWithEmailAndPassword(auth, email, password);
+          return true;
+        } catch (signInErr: any) {
+          if (signInErr.code === 'auth/user-not-found' || signInErr.code === 'auth/invalid-credential') {
+            // Auto-signup the default admin account
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const adminUser: User = {
+              id: userCredential.user.uid,
+              email: email,
+              fullName: 'Sonali Kothari',
+              role: 'admin',
+              points: 1000,
+              streak: 15,
+              badges: ['first_step', 'streaker', 'super_student'],
+              completedLessons: []
+            };
+            await db.updateUser(adminUser);
+            // Re-authenticate
+            await signInWithEmailAndPassword(auth, email, password);
+            return true;
+          }
+          throw signInErr;
+        }
+      }
 
-    if (!foundUser) {
-      return false; // Authentication failed
+      await signInWithEmailAndPassword(auth, email, password);
+      return true;
+    } catch (error) {
+      console.error('Authentication Error:', error);
+      return false;
     }
-
-    localStorage.setItem('current_user_id', foundUser.id);
-    setUser(foundUser);
-    db.triggerStreakLogin(foundUser.id);
-    const refreshed = db.getUser(foundUser.id);
-    if (refreshed) setUser(refreshed);
-    return true;
   };
 
   const signup = async (fullName: string, email: string, password?: string): Promise<boolean> => {
-    const users = db.getUsers();
-    const exists = users.some(u => u.email.toLowerCase() === email.toLowerCase());
-    if (exists) return false;
+    try {
+      const studentPassword = password || 'student123';
 
-    const newStudent: User = {
-      id: `user-${Date.now()}`,
-      email: email,
-      fullName: fullName,
-      password: password || 'student123', // Admin specified password or default
-      role: 'student', // Defaults to student enrollment
-      points: 10, // Start with welcome points
-      streak: 1,
-      lastLoginDate: new Date().toISOString().split('T')[0],
-      badges: ['first_step'], // First step badge automatically unlocked on signup
-      completedLessons: []
-    };
+      // Use a secondary Firebase app instance to create the user.
+      // This prevents the Admin's active login session from being overwritten/logged out.
+      const secondaryApp = initializeApp(auth.app.options, 'SecondaryAdminApp');
+      const secondaryAuth = auth.app.options ? getAuth(secondaryApp) : auth;
 
-    const allUsers = [...users, newStudent];
-    localStorage.setItem('users', JSON.stringify(allUsers));
-    return true; // Return true to indicate account created (no autologin for admin actions)
+      const userCredential = await createUserWithEmailAndPassword(
+        secondaryAuth, 
+        email, 
+        studentPassword
+      );
+
+      const newStudent: User = {
+        id: userCredential.user.uid,
+        email: email,
+        fullName: fullName,
+        role: 'student',
+        points: 10,
+        streak: 1,
+        lastLoginDate: new Date().toISOString().split('T')[0],
+        badges: ['first_step'],
+        completedLessons: []
+      };
+
+      // Write user profile to Firestore
+      await db.updateUser(newStudent);
+
+      // Sign out from the secondary instance and delete it
+      await signOut(secondaryAuth);
+      await deleteApp(secondaryApp);
+
+      return true;
+    } catch (error) {
+      console.error('Registration Error:', error);
+      return false;
+    }
   };
 
-  const logout = () => {
-    localStorage.removeItem('current_user_id');
-    setUser(null);
+  const logout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+    } catch (error) {
+      console.error('Logout Error:', error);
+    }
   };
 
-  const refreshUser = () => {
-    if (user) {
-      const refreshed = db.getUser(user.id);
+  const refreshUser = async () => {
+    if (auth.currentUser) {
+      const refreshed = await db.getUser(auth.currentUser.uid);
       if (refreshed) setUser(refreshed);
     }
   };

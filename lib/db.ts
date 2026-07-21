@@ -1,5 +1,12 @@
-// In-memory/localStorage mock database client
-// This allows the app to function immediately and securely, and can be swapped for Supabase API calls later.
+import { firestore } from './firebase';
+import { 
+  collection, 
+  doc, 
+  getDocs, 
+  getDoc, 
+  setDoc, 
+  updateDoc 
+} from 'firebase/firestore';
 
 export interface Lesson {
   id: string;
@@ -44,7 +51,7 @@ export interface User {
   id: string;
   email: string;
   fullName: string;
-  password?: string; // Securely stored password
+  password?: string;
   role: 'student' | 'lead' | 'admin';
   points: number;
   streak: number;
@@ -88,7 +95,7 @@ const DEFAULT_COURSES: Course[] = [
             id: 'les-1',
             moduleId: 'mod-1',
             title: '1. Introduction to Aligned Living',
-            videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', // Placeholder unlisted link style
+            videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
             contentType: 'video',
             description: 'In this session, we lay the foundation of the identity shift framework and explore how to align your focus for growth.',
             duration: '6:15',
@@ -256,124 +263,97 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = Array.from({ length: 25 }, (_, i) =>
   pinned: i < 6 // Pin first 6 for the home layout
 }));
 
-// Default Admin User and Student User
-const DEFAULT_USERS: User[] = [
-  {
-    id: 'user-admin',
-    email: 'sonali@kothari.com',
-    fullName: 'Sonali Kothari',
-    password: 'sonaliadmin123',
-    role: 'admin',
-    points: 1000,
-    streak: 15,
-    badges: ['first_step', 'streaker', 'super_student'],
-    completedLessons: []
-  },
-  {
-    id: 'user-student',
-    email: 'student@example.com',
-    fullName: 'Test Student',
-    password: 'student123',
-    role: 'student',
-    points: 20,
-    streak: 1,
-    lastLoginDate: new Date().toISOString().split('T')[0],
-    badges: ['first_step'],
-    completedLessons: ['les-1']
-  }
-];
-
-// Helper to initialize local storage
-const initializeDB = () => {
-  if (typeof window === 'undefined') return;
-
-  if (!localStorage.getItem('courses')) {
-    localStorage.setItem('courses', JSON.stringify(DEFAULT_COURSES));
-  }
-  if (!localStorage.getItem('testimonials')) {
-    localStorage.setItem('testimonials', JSON.stringify(DEFAULT_TESTIMONIALS));
-  }
-  if (!localStorage.getItem('users')) {
-    localStorage.setItem('users', JSON.stringify(DEFAULT_USERS));
-  }
-};
-
 export const db = {
-  initialize: initializeDB,
+  initialize: async (): Promise<void> => {
+    // 1. Seed courses if collection is empty
+    const coursesCol = collection(firestore, 'courses');
+    const coursesSnapshot = await getDocs(coursesCol);
+    if (coursesSnapshot.empty) {
+      for (const course of DEFAULT_COURSES) {
+        await setDoc(doc(firestore, 'courses', course.id), course);
+      }
+    }
 
-  getCourses: (): Course[] => {
-    initializeDB();
-    if (typeof window === 'undefined') return DEFAULT_COURSES;
-    return JSON.parse(localStorage.getItem('courses') || '[]');
+    // 2. Seed testimonials if collection is empty
+    const testimonialsCol = collection(firestore, 'testimonials');
+    const testimonialsSnapshot = await getDocs(testimonialsCol);
+    if (testimonialsSnapshot.empty) {
+      for (const testimonial of DEFAULT_TESTIMONIALS) {
+        await setDoc(doc(firestore, 'testimonials', testimonial.id), testimonial);
+      }
+    }
   },
 
-  updateCourses: (courses: Course[]) => {
-    if (typeof window === 'undefined') return;
-    localStorage.setItem('courses', JSON.stringify(courses));
+  getCourses: async (): Promise<Course[]> => {
+    const coursesCol = collection(firestore, 'courses');
+    const snapshot = await getDocs(coursesCol);
+    if (snapshot.empty) {
+      return DEFAULT_COURSES;
+    }
+    return snapshot.docs.map(doc => doc.data() as Course);
   },
 
-  getTestimonials: (): Testimonial[] => {
-    initializeDB();
-    if (typeof window === 'undefined') return DEFAULT_TESTIMONIALS;
-    return JSON.parse(localStorage.getItem('testimonials') || '[]');
+  updateCourses: async (courses: Course[]): Promise<void> => {
+    for (const course of courses) {
+      await setDoc(doc(firestore, 'courses', course.id), course);
+    }
   },
 
-  addTestimonial: (t: Omit<Testimonial, 'id' | 'approved' | 'pinned'>) => {
-    if (typeof window === 'undefined') return;
-    const testimonials = db.getTestimonials();
+  getTestimonials: async (): Promise<Testimonial[]> => {
+    const testimonialsCol = collection(firestore, 'testimonials');
+    const snapshot = await getDocs(testimonialsCol);
+    if (snapshot.empty) {
+      return DEFAULT_TESTIMONIALS;
+    }
+    return snapshot.docs.map(doc => doc.data() as Testimonial);
+  },
+
+  addTestimonial: async (t: Omit<Testimonial, 'id' | 'approved' | 'pinned'>): Promise<Testimonial> => {
+    const id = `test-${Date.now()}`;
     const newTestimonial: Testimonial = {
       ...t,
-      id: `test-${Date.now()}`,
-      approved: false, // Must be approved by admin
+      id,
+      approved: false, // Admin approval required
       pinned: false
     };
-    testimonials.push(newTestimonial);
-    localStorage.setItem('testimonials', JSON.stringify(testimonials));
+    await setDoc(doc(firestore, 'testimonials', id), newTestimonial);
     return newTestimonial;
   },
 
-  approveTestimonial: (id: string, approve: boolean) => {
-    if (typeof window === 'undefined') return;
-    const testimonials = db.getTestimonials();
-    const index = testimonials.findIndex(t => t.id === id);
-    if (index !== -1) {
-      testimonials[index].approved = approve;
-      localStorage.setItem('testimonials', JSON.stringify(testimonials));
+  approveTestimonial: async (id: string, approve: boolean): Promise<void> => {
+    const testimonialRef = doc(firestore, 'testimonials', id);
+    await updateDoc(testimonialRef, { approved: approve });
+  },
+
+  pinTestimonial: async (id: string, pin: boolean): Promise<void> => {
+    const testimonialRef = doc(firestore, 'testimonials', id);
+    await updateDoc(testimonialRef, { pinned: pin });
+  },
+
+  getUsers: async (): Promise<User[]> => {
+    const usersCol = collection(firestore, 'users');
+    const snapshot = await getDocs(usersCol);
+    return snapshot.docs.map(doc => doc.data() as User);
+  },
+
+  getUser: async (id: string): Promise<User | undefined> => {
+    const userRef = doc(firestore, 'users', id);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      return userSnap.data() as User;
     }
+    return undefined;
   },
 
-  pinTestimonial: (id: string, pin: boolean) => {
-    if (typeof window === 'undefined') return;
-    const testimonials = db.getTestimonials();
-    const index = testimonials.findIndex(t => t.id === id);
-    if (index !== -1) {
-      testimonials[index].pinned = pin;
-      localStorage.setItem('testimonials', JSON.stringify(testimonials));
-    }
+  updateUser: async (user: User): Promise<void> => {
+    const userRef = doc(firestore, 'users', user.id);
+    // Destructure password out of User object to prevent storing plain-text passwords in Firestore
+    const { password, ...userWithoutPassword } = user;
+    await setDoc(userRef, userWithoutPassword, { merge: true });
   },
 
-  getUsers: (): User[] => {
-    initializeDB();
-    if (typeof window === 'undefined') return DEFAULT_USERS;
-    return JSON.parse(localStorage.getItem('users') || '[]');
-  },
-
-  getUser: (id: string): User | undefined => {
-    return db.getUsers().find(u => u.id === id);
-  },
-
-  updateUser: (user: User) => {
-    if (typeof window === 'undefined') return;
-    const users = db.getUsers();
-    const index = users.findIndex(u => u.id === user.id);
-    if (index !== -1) {
-      users[index] = user;
-      localStorage.setItem('users', JSON.stringify(users));
-    }
-  },
-
-  completeLesson: (userId: string, lessonId: string): { pointsAdded: number; newBadgeUnlocked?: Badge } => {
-    const user = db.getUser(userId);
+  completeLesson: async (userId: string, lessonId: string): Promise<{ pointsAdded: number; newBadgeUnlocked?: Badge }> => {
+    const user = await db.getUser(userId);
     if (!user) return { pointsAdded: 0 };
 
     if (user.completedLessons.includes(lessonId)) {
@@ -399,8 +379,8 @@ export const db = {
       newBadgeUnlocked = BADGES.find(b => b.id === 'super_student');
     }
 
-    // Check for Course Completion (all 10 lessons completed)
-    const courses = db.getCourses();
+    // Check for Course Completion (all lessons completed)
+    const courses = await db.getCourses();
     const allLessonIds = courses.flatMap(c => c.modules.flatMap(m => m.lessons.map(l => l.id)));
     const hasCompletedAll = allLessonIds.every(id => user.completedLessons.includes(id));
     
@@ -409,12 +389,12 @@ export const db = {
       newBadgeUnlocked = BADGES.find(b => b.id === 'complete');
     }
 
-    db.updateUser(user);
+    await db.updateUser(user);
     return { pointsAdded, newBadgeUnlocked };
   },
 
-  triggerStreakLogin: (userId: string): { streakUpdated: boolean; newBadgeUnlocked?: Badge } => {
-    const user = db.getUser(userId);
+  triggerStreakLogin: async (userId: string): Promise<{ streakUpdated: boolean; newBadgeUnlocked?: Badge }> => {
+    const user = await db.getUser(userId);
     if (!user) return { streakUpdated: false };
 
     const todayStr = new Date().toISOString().split('T')[0];
@@ -454,7 +434,7 @@ export const db = {
       newBadgeUnlocked = BADGES.find(b => b.id === 'streaker');
     }
 
-    db.updateUser(user);
+    await db.updateUser(user);
     return { streakUpdated, newBadgeUnlocked };
   }
 };
