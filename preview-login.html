@@ -14,13 +14,13 @@
       theme: {
         extend: {
           colors: {
-            background: "#0A192F",
-            cardBg: "#172A45",
-            cardBorder: "#233554",
-            tealAccent: "#64FFDA",
-            goldAccent: "#FFD700",
-            textPrimary: "#CCD6F6",
-            textSecondary: "#8892B0",
+            background: "#FDFBF7",
+            cardBg: "#FFFFFF",
+            cardBorder: "#F0E5F0",
+            plumAccent: "#4A124A", peachAccent: "#F4B393", tealAccent: "#0D9488",
+            goldAccent: "#D97706",
+            textPrimary: "#1A0C1A",
+            textSecondary: "#7C6C80",
             success: "#10B981"
           },
           fontFamily: {
@@ -34,26 +34,27 @@
 
   <style>
     body {
-      background-color: #0A192F;
-      color: #CCD6F6;
+      background-color: #FDFBF7; 
+ color: #1F1625;
+      color: #1F1625;
       font-family: 'Inter', sans-serif;
     }
     .glass-panel {
-      background: rgba(23, 42, 69, 0.7);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(35, 53, 84, 0.5);
+      border: 1px solid rgba(74, 18, 74, 0.1); box-shadow: 0 4px 30px rgba(244, 179, 147, 0.04);
     }
   </style>
 </head>
 <body class="flex min-h-screen items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8 relative overflow-hidden">
   
-  <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-tealAccent/5 blur-[120px] pointer-events-none"></div>
+  <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-plumAccent/5 blur-[120px] pointer-events-none"></div>
   <div class="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-goldAccent/5 blur-[120px] pointer-events-none"></div>
 
-  <div class="w-full max-w-md space-y-8 glass-panel p-8 rounded-2xl border border-cardBorder/60 shadow-2xl relative z-10">
+  <div class="w-full max-w-md space-y-8 glass-panel p-8 rounded-2xl border border-cardBorder shadow-2xl relative z-10">
     <div class="text-center">
-      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-tealAccent/10 text-tealAccent font-bold text-xl">
+      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-plumAccent/10 text-plumAccent font-bold text-xl">
         🧭
       </div>
       <h2 class="mt-6 text-3xl font-bold tracking-tight font-display text-textPrimary">
@@ -65,7 +66,7 @@
     </div>
 
     <!-- Error Alert Box -->
-    <div id="errorBox" class="p-3 text-xs bg-red-950/40 border border-red-500/30 text-red-300 rounded-md hidden"></div>
+    <div id="errorBox" class="p-3 text-xs bg-red-50 border border-red-200 text-red-700 rounded-md hidden"></div>
 
     <form class="mt-8 space-y-6" onsubmit="handleLogin(event)">
       <div class="space-y-4 rounded-md">
@@ -78,7 +79,7 @@
             id="email-address"
             type="email"
             required
-            class="block w-full px-3 py-3 border border-cardBorder rounded-lg bg-background/60 text-textPrimary placeholder-textSecondary focus:outline-none focus:border-tealAccent focus:ring-1 focus:ring-tealAccent transition-all text-sm"
+            class="block w-full px-3 py-3 border border-cardBorder rounded-lg bg-white text-textPrimary placeholder-textSecondary focus:outline-none focus:border-plumAccent focus:ring-1 focus:ring-tealAccent transition-all text-sm"
             placeholder="you@example.com"
           />
         </div>
@@ -92,7 +93,7 @@
             id="password"
             type="password"
             required
-            class="block w-full px-3 py-3 border border-cardBorder rounded-lg bg-background/60 text-textPrimary placeholder-textSecondary focus:outline-none focus:border-tealAccent focus:ring-1 focus:ring-tealAccent transition-all text-sm"
+            class="block w-full px-3 py-3 border border-cardBorder rounded-lg bg-white text-textPrimary placeholder-textSecondary focus:outline-none focus:border-plumAccent focus:ring-1 focus:ring-tealAccent transition-all text-sm"
             placeholder="••••••••"
           />
         </div>
@@ -107,21 +108,21 @@
       <div>
         <button
           type="submit"
-          class="group relative flex w-full justify-center rounded-lg bg-tealAccent px-4 py-3 text-sm font-semibold text-background hover:bg-tealAccent/80 focus:outline-none focus:ring-2 focus:ring-tealAccent transition-all font-display items-center gap-1 cursor-pointer"
+          class="group relative flex w-full justify-center rounded-lg bg-plumAccent px-4 py-3 text-sm font-semibold text-white hover:bg-plumAccent/80 focus:outline-none focus:ring-2 focus:ring-tealAccent transition-all font-display items-center gap-1 cursor-pointer"
         >
           Sign In
         </button>
       </div>
     </form>
 
-    <div class="text-center text-xs text-textSecondary pt-4 border-t border-cardBorder/40">
+    <div class="text-center text-xs text-textSecondary pt-4 border-t border-cardBorder">
       <p class="mb-2">
         Default credentials for this preview:
       </p>
-      <p class="font-mono text-[10px] text-tealAccent">
+      <p class="font-mono text-[10px] text-plumAccent">
         Admin: sonali@kothari.com / sonaliadmin123
       </p>
-      <p class="font-mono text-[10px] text-tealAccent mt-1">
+      <p class="font-mono text-[10px] text-plumAccent mt-1">
         Student: student@example.com / student123
       </p>
       <p class="mt-4">

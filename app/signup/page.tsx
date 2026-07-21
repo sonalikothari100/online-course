@@ -35,13 +35,12 @@ export default function SignupPage() {
         return;
       }
 
-      // Add to database as a pending "lead" with a temporary locked status (no password yet)
       const pendingLead = {
         id: `user-${Date.now()}`,
         email: email,
         fullName: fullName,
-        password: '', // Locked - Admin must assign password in admin panel
-        role: 'lead' as const, // Lead role (does not have full course access)
+        password: '',
+        role: 'lead' as const,
         points: 0,
         streak: 0,
         badges: [],
@@ -61,14 +60,14 @@ export default function SignupPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background calibration lights */}
-      <div className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-tealAccent/5 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-goldAccent/5 blur-[120px] pointer-events-none" />
+      {/* Background blurs */}
+      <div className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-peachAccent/10 blur-[130px] pointer-events-none animate-pulse" />
+      <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-plumAccent/5 blur-[130px] pointer-events-none" />
 
-      <div className="w-full max-w-md space-y-8 glass-panel p-8 rounded-2xl border border-cardBorder/60 shadow-2xl relative z-10">
+      <div className="w-full max-w-md space-y-8 glass-panel p-8 rounded-3xl border border-cardBorder shadow-xl relative z-10">
         {success ? (
           <div className="text-center py-8 space-y-4">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success/20 text-success">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 shadow-sm">
               <CheckCircle2 className="h-10 w-10" />
             </div>
             <h2 className="text-2xl font-bold tracking-tight font-display text-textPrimary">
@@ -78,7 +77,7 @@ export default function SignupPage() {
               Your registration request has been sent to Sonali Kothari. Once approved, she will create your password credentials and notify you.
             </p>
             <div className="pt-4">
-              <Link href="/" className="text-tealAccent hover:underline font-semibold text-xs flex items-center justify-center gap-1">
+              <Link href="/" className="text-plumAccent hover:underline font-semibold text-xs flex items-center justify-center gap-1">
                 Back to Home page
               </Link>
             </div>
@@ -86,7 +85,7 @@ export default function SignupPage() {
         ) : (
           <>
             <div className="text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-tealAccent/10 text-tealAccent">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-plumAccent/10 text-plumAccent">
                 <Sparkles className="h-8 w-8" />
               </div>
               <h2 className="mt-6 text-3xl font-bold tracking-tight font-display text-textPrimary">
@@ -98,8 +97,8 @@ export default function SignupPage() {
             </div>
 
             {error && (
-              <div className="p-3 text-xs bg-red-950/40 border border-red-500/30 text-red-300 rounded-md">
-                {error}
+              <div className="p-3 text-xs bg-red-50 border border-red-200 text-red-700 rounded-xl text-left">
+                ⚠️ {error}
               </div>
             )}
 
@@ -120,7 +119,7 @@ export default function SignupPage() {
                       required
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="block w-full pl-10 pr-3 py-3 border border-cardBorder rounded-lg bg-background/60 text-textPrimary placeholder-textSecondary focus:outline-none focus:border-tealAccent focus:ring-1 focus:ring-tealAccent transition-all text-sm"
+                      className="block w-full pl-10 pr-3 py-3 border border-cardBorder rounded-xl bg-white text-textPrimary placeholder-textSecondary/70 focus:outline-none focus:border-plumAccent focus:ring-1 focus:ring-plumAccent transition-all text-sm shadow-sm"
                       placeholder="Jane Doe"
                     />
                   </div>
@@ -142,14 +141,14 @@ export default function SignupPage() {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="block w-full pl-10 pr-3 py-3 border border-cardBorder rounded-lg bg-background/60 text-textPrimary placeholder-textSecondary focus:outline-none focus:border-tealAccent focus:ring-1 focus:ring-tealAccent transition-all text-sm"
+                      className="block w-full pl-10 pr-3 py-3 border border-cardBorder rounded-xl bg-white text-textPrimary placeholder-textSecondary/70 focus:outline-none focus:border-plumAccent focus:ring-1 focus:ring-plumAccent transition-all text-sm shadow-sm"
                       placeholder="you@example.com"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="text-xs text-textSecondary bg-cardBg/40 border border-cardBorder/40 p-3 rounded-lg leading-relaxed text-left">
+              <div className="text-xs text-textSecondary bg-slate-50 border border-cardBorder p-3 rounded-xl leading-relaxed text-left">
                 <strong>Important:</strong> Accounts are locked upon submission. Only Sonali Kothari can activate your credentials. Once active, your login details will be shared.
               </div>
 
@@ -157,18 +156,18 @@ export default function SignupPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="group relative flex w-full justify-center rounded-lg bg-tealAccent px-4 py-3 text-sm font-semibold text-background hover:bg-tealAccent/80 focus:outline-none focus:ring-2 focus:ring-tealAccent focus:ring-offset-2 focus:ring-offset-background transition-all font-display items-center gap-1 cursor-pointer"
+                  className="group relative flex w-full justify-center rounded-xl bg-plumAccent px-4 py-3.5 text-sm font-semibold text-white hover:bg-plumAccent/90 focus:outline-none focus:ring-2 focus:ring-plumAccent focus:ring-offset-2 focus:ring-offset-background transition-all font-display items-center gap-1.5 cursor-pointer shadow-md"
                 >
                   {isSubmitting ? 'Submitting request...' : 'Send Access Request'}
-                  <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform text-white" />
                 </button>
               </div>
             </form>
 
-            <div className="text-center text-xs text-textSecondary pt-4 border-t border-cardBorder/40">
+            <div className="text-center text-xs text-textSecondary pt-4 border-t border-cardBorder">
               <p>
                 Have active login credentials?{' '}
-                <Link href="/login" className="text-tealAccent hover:underline font-semibold">
+                <Link href="/login" className="text-plumAccent hover:underline font-semibold">
                   Login Here
                 </Link>
               </p>

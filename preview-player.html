@@ -14,13 +14,13 @@
       theme: {
         extend: {
           colors: {
-            background: "#0A192F",
-            cardBg: "#172A45",
-            cardBorder: "#233554",
-            tealAccent: "#64FFDA",
-            goldAccent: "#FFD700",
-            textPrimary: "#CCD6F6",
-            textSecondary: "#8892B0",
+            background: "#FDFBF7",
+            cardBg: "#FFFFFF",
+            cardBorder: "#F0E5F0",
+            plumAccent: "#4A124A", peachAccent: "#F4B393", tealAccent: "#0D9488",
+            goldAccent: "#D97706",
+            textPrimary: "#1A0C1A",
+            textSecondary: "#7C6C80",
             success: "#10B981"
           },
           fontFamily: {
@@ -34,17 +34,18 @@
 
   <style>
     body {
-      background-color: #0A192F;
-      color: #CCD6F6;
+      background-color: #FDFBF7; 
+ color: #1F1625;
+      color: #1F1625;
       font-family: 'Inter', sans-serif;
     }
     .glass-panel {
-      background: rgba(23, 42, 69, 0.7);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(35, 53, 84, 0.5);
+      border: 1px solid rgba(74, 18, 74, 0.1); box-shadow: 0 4px 30px rgba(244, 179, 147, 0.04);
     }
-    .tab-underline {
+    .bg-plumAccent h-0.5 rounded-full {
       height: 3px;
       background-color: #64FFDA;
       border-radius: 3px;
@@ -54,13 +55,13 @@
 <body class="min-h-screen bg-background text-textPrimary relative flex flex-col">
 
   <!-- Header -->
-  <header class="h-16 border-b border-cardBorder/40 bg-[#0A192F]/80 backdrop-blur-md px-4 flex items-center justify-between sticky top-0 z-30">
+  <header class="h-16 border-b border-cardBorder bg-[#FDFBF7]/80 backdrop-blur-md px-4 flex items-center justify-between sticky top-0 z-30">
     <div class="flex items-center gap-3">
       <a href="preview-dashboard.html" class="p-2 hover:bg-cardBg rounded-lg text-textSecondary hover:text-textPrimary transition-colors">
         ← Exit Course
       </a>
       <div class="text-left">
-        <span class="text-[10px] font-bold text-tealAccent uppercase tracking-widest block">Active Course</span>
+        <span class="text-[10px] font-bold text-plumAccent uppercase tracking-widest block">Active Course</span>
         <h1 class="font-display font-bold text-sm sm:text-base text-textPrimary">
           Align & Awaken: The Identity Shift Program
         </h1>
@@ -72,11 +73,11 @@
       <div class="hidden md:block text-right">
         <span class="text-xs font-semibold text-textSecondary"><span id="progressText">20</span>% Completed</span>
         <div class="w-32 bg-cardBorder h-1.5 rounded-full overflow-hidden mt-1 border border-cardBorder/30">
-          <div id="progressBar" class="bg-tealAccent h-full rounded-full transition-all duration-500" style="width: 20%"></div>
+          <div id="progressBar" class="bg-plumAccent h-full rounded-full transition-all duration-500" style="width: 20%"></div>
         </div>
       </div>
       <span class="h-8 w-px bg-cardBorder/40 hidden md:block"></span>
-      <div class="flex items-center gap-1 bg-goldAccent/10 text-goldAccent border border-goldAccent/20 px-3 py-1 rounded-full text-xs font-semibold">
+      <div class="flex items-center gap-1 bg-goldAccent/10 text-amber-600 border border-goldAccent/20 px-3 py-1 rounded-full text-xs font-semibold">
         🏆 <span id="pointsXP">20 XP</span>
       </div>
     </div>
@@ -93,12 +94,12 @@
         
         <!-- Auto Advance Overlay -->
         <div id="advanceOverlay" class="absolute inset-0 z-20 bg-background/90 backdrop-blur-md flex flex-col items-center justify-center text-center space-y-4 hidden">
-          <span class="h-10 w-10 text-tealAccent text-2xl animate-spin">🧭</span>
+          <span class="h-10 w-10 text-plumAccent text-2xl animate-spin">🧭</span>
           <h3 class="font-display font-bold text-xl text-textPrimary">Session Completed!</h3>
           <p class="text-sm text-textSecondary">
-            Next video starting in <span id="countText" class="font-bold text-tealAccent text-lg">3</span> seconds...
+            Next video starting in <span id="countText" class="font-bold text-plumAccent text-lg">3</span> seconds...
           </p>
-          <button onclick="skipCountdown()" class="px-4 py-2 bg-tealAccent text-background rounded-lg text-xs font-bold hover:bg-tealAccent/80 cursor-pointer">
+          <button onclick="skipCountdown()" class="px-4 py-2 bg-plumAccent text-white rounded-lg text-xs font-bold hover:bg-plumAccent/80 cursor-pointer">
             Skip Countdown
           </button>
         </div>
@@ -119,7 +120,7 @@
 
         <!-- Playback Simulation Button -->
         <div class="absolute bottom-4 right-4 z-10">
-          <button onclick="completeLesson()" class="px-3 py-1.5 bg-background/80 hover:bg-background border border-cardBorder text-tealAccent rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer">
+          <button onclick="completeLesson()" class="px-3 py-1.5 bg-white/80 hover:bg-background border border-cardBorder text-plumAccent rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer">
             ✓ Simulate Video Finished
           </button>
         </div>
@@ -127,23 +128,23 @@
 
       <!-- Tabs Nav -->
       <div class="space-y-4 text-left">
-        <div class="flex border-b border-cardBorder/40 gap-6">
-          <button onclick="switchTab('resources')" id="tab-resources" class="pb-3 text-xs font-semibold uppercase tracking-wider relative flex items-center gap-1.5 text-tealAccent cursor-pointer">
+        <div class="flex border-b border-cardBorder gap-6">
+          <button onclick="switchTab('resources')" id="tab-resources" class="pb-3 text-xs font-semibold uppercase tracking-wider relative flex items-center gap-1.5 text-plumAccent cursor-pointer">
             📥 Resources
-            <div id="line-resources" class="absolute bottom-0 inset-x-0 tab-underline"></div>
+            <div id="line-resources" class="absolute bottom-0 inset-x-0 bg-plumAccent h-0.5 rounded-full"></div>
           </button>
           <button onclick="switchTab('comments')" id="tab-comments" class="pb-3 text-xs font-semibold uppercase tracking-wider relative flex items-center gap-1.5 text-textSecondary hover:text-textPrimary cursor-pointer">
             💬 Comments
-            <div id="line-comments" class="absolute bottom-0 inset-x-0 tab-underline hidden"></div>
+            <div id="line-comments" class="absolute bottom-0 inset-x-0 bg-plumAccent h-0.5 rounded-full hidden"></div>
           </button>
           <button onclick="switchTab('breakthrough')" id="tab-breakthrough" class="pb-3 text-xs font-semibold uppercase tracking-wider relative flex items-center gap-1.5 text-textSecondary hover:text-textPrimary cursor-pointer">
             ✨ Share Breakthrough
-            <div id="line-breakthrough" class="absolute bottom-0 inset-x-0 tab-underline hidden"></div>
+            <div id="line-breakthrough" class="absolute bottom-0 inset-x-0 bg-plumAccent h-0.5 rounded-full hidden"></div>
           </button>
         </div>
 
         <!-- Tab Content Box -->
-        <div class="min-h-[150px] p-5 bg-cardBg/30 border border-cardBorder/40 rounded-2xl">
+        <div class="min-h-[150px] p-5 bg-white border border-cardBorder rounded-2xl">
           
           <!-- Resources Content -->
           <div id="panel-resources" class="space-y-4">
@@ -151,12 +152,12 @@
             <p id="lessonDesc" class="text-xs text-textSecondary leading-relaxed">
               In this session, we lay the foundation of the identity shift framework and explore how to align your focus for growth.
             </p>
-            <div class="space-y-2 pt-4 border-t border-cardBorder/40">
+            <div class="space-y-2 pt-4 border-t border-cardBorder">
               <h5 class="font-bold text-xs text-textPrimary uppercase tracking-wider">Lesson Attachments</h5>
               <div id="attachmentsBox" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <a href="#" class="p-3 bg-background/40 hover:bg-background border border-cardBorder/60 rounded-xl flex items-center justify-between text-xs text-textSecondary hover:border-tealAccent/20 transition-all">
+                <a href="#" class="p-3 bg-white hover:bg-background border border-cardBorder rounded-xl flex items-center justify-between text-xs text-textSecondary hover:border-plumAccent/20 transition-all">
                   <span class="flex items-center gap-2 text-textPrimary">📥 Module 1 Grounding Handbook.pdf</span>
-                  <span class="text-[10px] text-tealAccent uppercase font-bold">Download</span>
+                  <span class="text-[10px] text-plumAccent uppercase font-bold">Download</span>
                 </a>
               </div>
             </div>
@@ -165,8 +166,8 @@
           <!-- Comments Content -->
           <div id="panel-comments" class="space-y-4 hidden">
             <form onsubmit="postComment(event)" class="flex gap-2">
-              <input id="commInput" type="text" placeholder="Add a comment or ask a question..." required class="flex-1 bg-background/50 border border-cardBorder rounded-xl p-3 text-xs text-textPrimary placeholder-textSecondary focus:outline-none focus:border-tealAccent transition-all" />
-              <button type="submit" class="px-4 bg-tealAccent text-background rounded-xl text-xs font-bold hover:bg-tealAccent/80 transition-all cursor-pointer">
+              <input id="commInput" type="text" placeholder="Add a comment or ask a question..." required class="flex-1 bg-white border border-cardBorder rounded-xl p-3 text-xs text-textPrimary placeholder-textSecondary focus:outline-none focus:border-plumAccent transition-all" />
+              <button type="submit" class="px-4 bg-plumAccent text-white rounded-xl text-xs font-bold hover:bg-plumAccent/80 transition-all cursor-pointer">
                 Send
               </button>
             </form>
@@ -191,15 +192,15 @@
             <div id="breakSuccess" class="p-3 text-xs bg-success/15 border border-success/35 text-success rounded-xl hidden">✓ Win submitted! Points balance updated.</div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-              <form onsubmit="submitBreakthrough(event)" class="space-y-2 text-left border-b md:border-b-0 md:border-r border-cardBorder/40 pb-4 md:pb-0 md:pr-4">
+              <form onsubmit="submitBreakthrough(event)" class="space-y-2 text-left border-b md:border-b-0 md:border-r border-cardBorder pb-4 md:pb-0 md:pr-4">
                 <label class="text-[10px] font-bold text-textSecondary uppercase tracking-wider block">Write your win</label>
-                <textarea id="breakText" placeholder="What shifted for you during this session?" required class="w-full bg-background/50 border border-cardBorder rounded-xl p-3 text-xs text-textPrimary placeholder-textSecondary focus:outline-none focus:border-tealAccent h-24 resize-none transition-all"></textarea>
-                <button type="submit" class="px-4 py-2 bg-tealAccent text-background rounded-lg text-xs font-bold hover:bg-tealAccent/80 cursor-pointer">Submit Win (+20 XP)</button>
+                <textarea id="breakText" placeholder="What shifted for you during this session?" required class="w-full bg-white border border-cardBorder rounded-xl p-3 text-xs text-textPrimary placeholder-textSecondary focus:outline-none focus:border-plumAccent h-24 resize-none transition-all"></textarea>
+                <button type="submit" class="px-4 py-2 bg-plumAccent text-white rounded-lg text-xs font-bold hover:bg-plumAccent/80 cursor-pointer">Submit Win (+20 XP)</button>
               </form>
               <div class="space-y-3 flex flex-col justify-center text-left">
                 <label class="text-[10px] font-bold text-textSecondary uppercase tracking-wider block">Record Video win</label>
                 <p class="text-[11px] text-textSecondary font-sans">Simulate recording from your laptop camera.</p>
-                <button onclick="recordVideo()" id="recordBtn" class="py-3 rounded-xl text-xs font-bold border bg-goldAccent text-background hover:bg-goldAccent/80 border-goldAccent shadow-lg cursor-pointer">
+                <button onclick="recordVideo()" id="recordBtn" class="py-3 rounded-xl text-xs font-bold border bg-goldAccent text-white hover:bg-goldAccent/80 border-goldAccent shadow-lg cursor-pointer">
                   ✨ Record Video Win (+30 XP)
                 </button>
               </div>
@@ -211,8 +212,8 @@
     </div>
 
     <!-- Right Panel: Syllabus Outline Sidebar (Cols 4) -->
-    <div class="lg:col-span-4 border-t lg:border-t-0 lg:border-l border-cardBorder/40 bg-cardBg/15 flex flex-col h-full overflow-y-auto">
-      <div class="p-4 border-b border-cardBorder/40 text-left">
+    <div class="lg:col-span-4 border-t lg:border-t-0 lg:border-l border-cardBorder bg-cardBg/15 flex flex-col h-full overflow-y-auto">
+      <div class="p-4 border-b border-cardBorder text-left">
         <span class="text-[10px] font-bold text-textSecondary uppercase tracking-widest block">
           📖 Course Curriculum Outline
         </span>
@@ -263,8 +264,8 @@
           lessonsHtml += `
             <button onclick="loadLesson(${idx})" class="w-full p-3 rounded-xl border flex items-center justify-between text-xs transition-all ${
               isActive 
-                ? 'bg-tealAccent/15 border-tealAccent/30 text-tealAccent font-bold' 
-                : 'bg-cardBg/25 border-cardBorder/30 text-textSecondary hover:border-cardBorder/60 hover:text-textPrimary'
+                ? 'bg-plumAccent/10 border-plumAccent/30 text-plumAccent font-bold' 
+                : 'bg-slate-50 border-cardBorder/30 text-textSecondary hover:border-cardBorder hover:text-textPrimary'
             }">
               <div class="flex items-center gap-2 truncate mr-2">
                 <span>${isDone ? '✓' : '○'}</span>
@@ -277,7 +278,7 @@
 
         menu.innerHTML += `
           <div class="space-y-1.5 text-left">
-            <div class="px-3 py-2 bg-background/50 rounded-lg border border-cardBorder/40">
+            <div class="px-3 py-2 bg-white rounded-lg border border-cardBorder">
               <h4 class="font-display font-bold text-xs text-textPrimary">${m.title}</h4>
             </div>
             <div class="space-y-1 pl-3">${lessonsHtml}</div>
@@ -298,9 +299,9 @@
       ab.innerHTML = '';
       lesson.res.forEach(r => {
         ab.innerHTML += `
-          <a href="#" class="p-3 bg-background/40 hover:bg-background border border-cardBorder/60 rounded-xl flex items-center justify-between text-xs text-textSecondary hover:border-tealAccent/20 transition-all">
+          <a href="#" class="p-3 bg-white hover:bg-background border border-cardBorder rounded-xl flex items-center justify-between text-xs text-textSecondary hover:border-plumAccent/20 transition-all">
             <span class="flex items-center gap-2 text-textPrimary">📥 ${r}</span>
-            <span class="text-[10px] text-tealAccent uppercase font-bold">Download</span>
+            <span class="text-[10px] text-plumAccent uppercase font-bold">Download</span>
           </a>
         `;
       });
@@ -385,7 +386,7 @@
       // Show selected panel
       document.getElementById('panel-' + tabId).classList.remove('hidden');
       document.getElementById('line-' + tabId).classList.remove('hidden');
-      document.getElementById('tab-' + tabId).className = "pb-3 text-xs font-semibold uppercase tracking-wider relative flex items-center gap-1.5 text-tealAccent font-bold cursor-pointer";
+      document.getElementById('tab-' + tabId).className = "pb-3 text-xs font-semibold uppercase tracking-wider relative flex items-center gap-1.5 text-plumAccent font-bold cursor-pointer";
     }
 
     // Post Comments
@@ -396,7 +397,7 @@
 
       const list = document.getElementById('commentsList');
       list.innerHTML = `
-        <div class="p-3 bg-background/30 border border-tealAccent/20 rounded-xl text-left">
+        <div class="p-3 bg-background/30 border border-plumAccent/20 rounded-xl text-left">
           <div class="flex items-center justify-between text-[10px] mb-1">
             <span class="font-bold text-textPrimary font-display">You (Student)</span>
             <span class="text-textSecondary">Just now</span>
@@ -427,14 +428,14 @@
     function recordVideo() {
       const btn = document.getElementById('recordBtn');
       btn.textContent = '🎥 Camera starting...';
-      btn.className = "py-3 rounded-xl text-xs font-bold border bg-red-950/20 text-red-400 border-red-500/20 animate-pulse";
+      btn.className = "py-3 rounded-xl text-xs font-bold border bg-red-950/20 text-red-600 border-red-500/20 animate-pulse";
       
       setTimeout(() => {
         btn.textContent = '🔴 Recording win (0:03)...';
         
         setTimeout(() => {
           btn.textContent = '✨ Record Video Win (+30 XP)';
-          btn.className = "py-3 rounded-xl text-xs font-bold border bg-goldAccent text-background hover:bg-goldAccent/80 border-goldAccent shadow-lg cursor-pointer";
+          btn.className = "py-3 rounded-xl text-xs font-bold border bg-goldAccent text-white hover:bg-goldAccent/80 border-goldAccent shadow-lg cursor-pointer";
 
           userXP += 30;
           document.getElementById('pointsXP').textContent = userXP + ' XP';

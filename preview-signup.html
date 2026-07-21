@@ -14,13 +14,13 @@
       theme: {
         extend: {
           colors: {
-            background: "#0A192F",
-            cardBg: "#172A45",
-            cardBorder: "#233554",
-            tealAccent: "#64FFDA",
-            goldAccent: "#FFD700",
-            textPrimary: "#CCD6F6",
-            textSecondary: "#8892B0",
+            background: "#FDFBF7",
+            cardBg: "#FFFFFF",
+            cardBorder: "#F0E5F0",
+            plumAccent: "#4A124A", peachAccent: "#F4B393", tealAccent: "#0D9488",
+            goldAccent: "#D97706",
+            textPrimary: "#1A0C1A",
+            textSecondary: "#7C6C80",
             success: "#10B981"
           },
           fontFamily: {
@@ -34,24 +34,25 @@
 
   <style>
     body {
-      background-color: #0A192F;
-      color: #CCD6F6;
+      background-color: #FDFBF7; 
+ color: #1F1625;
+      color: #1F1625;
       font-family: 'Inter', sans-serif;
     }
     .glass-panel {
-      background: rgba(23, 42, 69, 0.7);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(35, 53, 84, 0.5);
+      border: 1px solid rgba(74, 18, 74, 0.1); box-shadow: 0 4px 30px rgba(244, 179, 147, 0.04);
     }
   </style>
 </head>
 <body class="flex min-h-screen items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8 relative overflow-hidden">
   
-  <div class="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-tealAccent/5 blur-[120px] pointer-events-none"></div>
+  <div class="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-plumAccent/5 blur-[120px] pointer-events-none"></div>
   <div class="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-goldAccent/5 blur-[120px] pointer-events-none"></div>
 
-  <div class="w-full max-w-md space-y-8 glass-panel p-8 rounded-2xl border border-cardBorder/60 shadow-2xl relative z-10">
+  <div class="w-full max-w-md space-y-8 glass-panel p-8 rounded-2xl border border-cardBorder shadow-2xl relative z-10">
     
     <!-- Request Success Screen -->
     <div id="successScreen" class="text-center py-8 space-y-4 hidden">
@@ -65,7 +66,7 @@
         Your registration request has been recorded. Once Sonali Kothari approves your request and sets your password in her Admin dashboard, you will receive your login details.
       </p>
       <div class="pt-4">
-        <a href="preview.html" class="text-tealAccent hover:underline font-semibold text-xs">
+        <a href="preview.html" class="text-plumAccent hover:underline font-semibold text-xs">
           ← Back to Home Page
         </a>
       </div>
@@ -74,7 +75,7 @@
     <!-- The Form Screen -->
     <div id="formScreen">
       <div class="text-center">
-        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-tealAccent/10 text-tealAccent font-bold text-xl">
+        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-plumAccent/10 text-plumAccent font-bold text-xl">
           ✨
         </div>
         <h2 class="mt-6 text-3xl font-bold tracking-tight font-display text-textPrimary">
@@ -95,7 +96,7 @@
               id="full-name"
               type="text"
               required
-              class="block w-full px-3 py-3 border border-cardBorder rounded-lg bg-background/60 text-textPrimary placeholder-textSecondary focus:outline-none focus:border-tealAccent transition-all text-sm"
+              class="block w-full px-3 py-3 border border-cardBorder rounded-lg bg-white text-textPrimary placeholder-textSecondary focus:outline-none focus:border-plumAccent transition-all text-sm"
               placeholder="Jane Doe"
             />
           </div>
@@ -108,30 +109,30 @@
               id="email-address"
               type="email"
               required
-              class="block w-full px-3 py-3 border border-cardBorder rounded-lg bg-background/60 text-textPrimary placeholder-textSecondary focus:outline-none focus:border-tealAccent transition-all text-sm"
+              class="block w-full px-3 py-3 border border-cardBorder rounded-lg bg-white text-textPrimary placeholder-textSecondary focus:outline-none focus:border-plumAccent transition-all text-sm"
               placeholder="you@example.com"
             />
           </div>
         </div>
 
-        <div class="text-xs text-textSecondary bg-cardBg/40 border border-cardBorder/40 p-3 rounded-lg leading-relaxed text-left">
+        <div class="text-xs text-textSecondary bg-cardBg/40 border border-cardBorder p-3 rounded-lg leading-relaxed text-left">
           <strong>Important:</strong> Accounts are locked upon submission. Only Sonali Kothari can activate your credentials. Once active, your login details will be shared.
         </div>
 
         <div>
           <button
             type="submit"
-            class="group relative flex w-full justify-center rounded-lg bg-tealAccent px-4 py-3 text-sm font-semibold text-background hover:bg-tealAccent/80 transition-all font-display items-center gap-1 cursor-pointer"
+            class="group relative flex w-full justify-center rounded-lg bg-plumAccent px-4 py-3 text-sm font-semibold text-white hover:bg-plumAccent/80 transition-all font-display items-center gap-1 cursor-pointer"
           >
             Send Access Request
           </button>
         </div>
       </form>
 
-      <div class="text-center text-xs text-textSecondary pt-4 border-t border-cardBorder/40 mt-4">
+      <div class="text-center text-xs text-textSecondary pt-4 border-t border-cardBorder mt-4">
         <p>
           Have active login credentials?{' '}
-          <a href="preview-login.html" class="text-tealAccent hover:underline font-semibold">
+          <a href="preview-login.html" class="text-plumAccent hover:underline font-semibold">
             Login Here
           </a>
         </p>

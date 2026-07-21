@@ -26,7 +26,6 @@ export default function LoginPage() {
     try {
       const success = await login(email, password);
       if (success) {
-        // Fetch the user session to determine role
         const currentUser = JSON.parse(localStorage.getItem('users') || '[]')
           .find((u: any) => u.email.toLowerCase() === email.toLowerCase());
 
@@ -47,13 +46,13 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Decorative background gradients (Daily Yoga style) */}
-      <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-tealAccent/5 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-goldAccent/5 blur-[120px] pointer-events-none" />
+      {/* Decorative brand blur elements */}
+      <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-peachAccent/10 blur-[130px] pointer-events-none animate-pulse" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-plumAccent/5 blur-[130px] pointer-events-none" />
 
-      <div className="w-full max-w-md space-y-8 glass-panel p-8 rounded-2xl border border-cardBorder/60 shadow-2xl relative z-10">
+      <div className="w-full max-w-md space-y-8 glass-panel p-8 rounded-3xl border border-cardBorder shadow-xl relative z-10">
         <div className="text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-tealAccent/10 text-tealAccent">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-plumAccent/10 text-plumAccent">
             <Compass className="h-8 w-8" />
           </div>
           <h2 className="mt-6 text-3xl font-bold tracking-tight font-display text-textPrimary">
@@ -65,8 +64,8 @@ export default function LoginPage() {
         </div>
 
         {error && (
-          <div className="p-3 text-xs bg-red-950/40 border border-red-500/30 text-red-300 rounded-md">
-            {error}
+          <div className="p-3 text-xs bg-red-50 border border-red-200 text-red-700 rounded-xl text-left">
+            ⚠️ {error}
           </div>
         )}
 
@@ -89,7 +88,7 @@ export default function LoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 border border-cardBorder rounded-lg bg-background/60 text-textPrimary placeholder-textSecondary focus:outline-none focus:border-tealAccent focus:ring-1 focus:ring-tealAccent transition-all text-sm"
+                  className="block w-full pl-10 pr-3 py-3 border border-cardBorder rounded-xl bg-white text-textPrimary placeholder-textSecondary/70 focus:outline-none focus:border-plumAccent focus:ring-1 focus:ring-plumAccent transition-all text-sm shadow-sm"
                   placeholder="you@example.com"
                 />
               </div>
@@ -112,7 +111,7 @@ export default function LoginPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 border border-cardBorder rounded-lg bg-background/60 text-textPrimary placeholder-textSecondary focus:outline-none focus:border-tealAccent focus:ring-1 focus:ring-tealAccent transition-all text-sm"
+                  className="block w-full pl-10 pr-3 py-3 border border-cardBorder rounded-xl bg-white text-textPrimary placeholder-textSecondary/70 focus:outline-none focus:border-plumAccent focus:ring-1 focus:ring-plumAccent transition-all text-sm shadow-sm"
                   placeholder="••••••••"
                 />
               </div>
@@ -120,8 +119,8 @@ export default function LoginPage() {
           </div>
 
           <div className="flex items-center justify-between text-xs">
-            <span className="text-textSecondary flex items-center gap-1">
-              <ShieldCheck className="h-4 w-4 text-tealAccent" />
+            <span className="text-textSecondary flex items-center gap-1.5 font-medium">
+              <ShieldCheck className="h-4 w-4 text-peachAccent" />
               Private Student Access Only
             </span>
           </div>
@@ -130,22 +129,22 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="group relative flex w-full justify-center rounded-lg bg-tealAccent px-4 py-3 text-sm font-semibold text-background hover:bg-tealAccent/80 focus:outline-none focus:ring-2 focus:ring-tealAccent focus:ring-offset-2 focus:ring-offset-background transition-all font-display items-center gap-1 cursor-pointer"
+              className="group relative flex w-full justify-center rounded-xl bg-plumAccent px-4 py-3.5 text-sm font-semibold text-white hover:bg-plumAccent/90 focus:outline-none focus:ring-2 focus:ring-plumAccent focus:ring-offset-2 focus:ring-offset-background transition-all font-display items-center gap-1.5 cursor-pointer shadow-md"
             >
               {isSubmitting ? 'Authenticating...' : 'Sign In'}
-              <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform text-white" />
             </button>
           </div>
         </form>
 
-        <div className="text-center text-xs text-textSecondary pt-4 border-t border-cardBorder/40">
-          <p className="mb-2">
+        <div className="text-center text-xs text-textSecondary pt-4 border-t border-cardBorder">
+          <p className="mb-2 font-medium">
             Default credentials for testing:
           </p>
-          <p className="font-mono text-[10px] text-tealAccent">
+          <p className="font-mono text-[10px] text-plumAccent font-bold">
             Admin: sonali@kothari.com / sonaliadmin123
           </p>
-          <p className="font-mono text-[10px] text-tealAccent mt-1">
+          <p className="font-mono text-[10px] text-plumAccent font-bold mt-1">
             Student: student@example.com / student123
           </p>
         </div>

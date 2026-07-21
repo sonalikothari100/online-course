@@ -14,13 +14,14 @@
       theme: {
         extend: {
           colors: {
-            background: "#0A192F",
-            cardBg: "#172A45",
-            cardBorder: "#233554",
-            tealAccent: "#64FFDA",
-            goldAccent: "#FFD700",
-            textPrimary: "#CCD6F6",
-            textSecondary: "#8892B0",
+            background: "#FDFBF7",
+            cardBg: "#FFFFFF",
+            cardBorder: "#F0E5F0",
+            plumAccent: "#4A124A", peachAccent: "#F4B393",
+            tealAccent: "#0D9488",
+            goldAccent: "#D97706",
+            textPrimary: "#1A0C1A",
+            textSecondary: "#7C6C80",
             success: "#10B981"
           },
           fontFamily: {
@@ -34,32 +35,51 @@
 
   <style>
     body {
-      background-color: #0A192F;
-      color: #CCD6F6;
+      background-color: #FDFBF7;
+      color: #1F1625;
       font-family: 'Inter', sans-serif;
     }
     .glass-panel {
-      background: rgba(23, 42, 69, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(35, 53, 84, 0.5);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(74, 18, 74, 0.1);
+      box-shadow: 0 4px 30px rgba(244, 179, 147, 0.04);
+    }
+    .plum-glow {
+      box-shadow: 0 0 20px rgba(74, 18, 74, 0.06);
+    }
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FDFBF7;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #EADCEB;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #D5BED7;
     }
   </style>
 </head>
-<body class="min-h-screen bg-background text-textPrimary relative pb-16">
+<body class="antialiased min-h-screen bg-background text-textPrimary relative pb-16">
 
   <!-- Header -->
-  <header class="sticky top-0 z-40 w-full border-b border-cardBorder/40 bg-[#0A192F]/80 backdrop-blur-md">
+  <header class="sticky top-0 z-40 w-full border-b border-cardBorder bg-white/80 backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <span class="text-tealAccent">🧭</span>
+        <span class="text-plumAccent text-lg">🧭</span>
         <span class="font-display font-bold text-base tracking-wider text-textPrimary uppercase">
           Sonali Kothari Academy
         </span>
       </div>
 
       <div class="flex items-center gap-6">
-        <a href="preview-admin.html" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-goldAccent/10 text-goldAccent border border-goldAccent/30 hover:bg-goldAccent/15 transition-all">
+        <a href="preview-admin.html" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-plumAccent/10 text-plumAccent border border-plumAccent/30 hover:bg-plumAccent/20 transition-all font-display">
           Go to Admin
         </a>
         <a href="preview-login.html" class="text-xs font-semibold text-textSecondary hover:text-textPrimary transition-colors">
@@ -69,12 +89,13 @@
     </div>
   </header>
 
-  <!-- Stats Grid -->
+  <!-- User welcome area -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Welcome -->
-      <div class="lg:col-span-2 glass-panel p-6 rounded-2xl border border-cardBorder/60 flex items-center gap-4 text-left relative overflow-hidden">
-        <div class="h-16 w-16 rounded-full bg-tealAccent/15 flex items-center justify-center text-tealAccent font-display text-2xl font-bold border border-tealAccent/30 uppercase">
+      
+      <!-- Welcome card -->
+      <div class="lg:col-span-2 glass-panel p-6 rounded-2xl border border-cardBorder flex items-center gap-4 text-left relative overflow-hidden">
+        <div class="h-16 w-16 rounded-full bg-plumAccent/10 flex items-center justify-center text-plumAccent font-display text-2xl font-bold border border-plumAccent/20 uppercase shrink-0">
           ST
         </div>
         <div class="space-y-1">
@@ -87,20 +108,20 @@
         </div>
       </div>
 
-      <!-- Streaks (Daily Yoga style) -->
-      <div class="glass-panel p-6 rounded-2xl border border-cardBorder/60 flex items-center justify-around">
+      <!-- Streak Points panel -->
+      <div class="glass-panel p-6 rounded-2xl border border-cardBorder flex items-center justify-around">
         <div class="flex flex-col items-center space-y-1">
-          <div class="h-12 w-12 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/25 flex items-center justify-center relative">
-            🔥 <span class="absolute top-[-5px] right-[-5px] bg-orange-500 text-background text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">1</span>
+          <div class="h-12 w-12 rounded-full bg-orange-500/10 text-orange-500 border border-orange-500/25 flex items-center justify-center relative">
+            🔥 <span class="absolute top-[-5px] right-[-5px] bg-orange-500 text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">1</span>
           </div>
           <span class="text-xs font-semibold text-textSecondary uppercase tracking-wider">Streak</span>
           <span class="text-sm font-bold text-textPrimary">1 Day</span>
         </div>
 
-        <div class="h-10 w-px bg-cardBorder/60"></div>
+        <div class="h-10 w-px bg-cardBorder"></div>
 
         <div class="flex flex-col items-center space-y-1">
-          <div class="h-12 w-12 rounded-full bg-goldAccent/10 text-goldAccent border border-goldAccent/25 flex items-center justify-center">
+          <div class="h-12 w-12 rounded-full bg-peachAccent/15 text-plumAccent border border-peachAccent/20 flex items-center justify-center">
             🏆
           </div>
           <span class="text-xs font-semibold text-textSecondary uppercase tracking-wider">Points</span>
@@ -110,44 +131,35 @@
     </div>
   </section>
 
-  <!-- Achievements Grid -->
+  <!-- Achievements collection -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-    <div class="glass-panel p-6 rounded-2xl border border-cardBorder/60 text-left">
-      <h3 class="text-xs font-bold text-textSecondary uppercase tracking-wider mb-4">
-        🏆 Earned Achievements
+    <div class="glass-panel p-6 rounded-2xl border border-cardBorder text-left">
+      <h3 class="text-xs font-bold text-textSecondary uppercase tracking-wider mb-4 flex items-center gap-1.5">
+        🏅 Earned Achievements
       </h3>
       <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
-        <!-- Badge 1: Unlocked -->
-        <div class="p-4 rounded-xl border border-tealAccent/30 bg-background/40 shadow-lg text-center flex flex-col items-center justify-center space-y-2">
-          <div class="text-xl">🧭</div>
+        <div class="p-4 rounded-xl border border-goldAccent/30 bg-white shadow-sm text-center flex flex-col items-center justify-center space-y-2">
+          <div class="text-lg">🧭</div>
           <h4 class="font-bold text-[11px] text-textPrimary tracking-tight">First Step</h4>
           <p class="text-[9px] text-textSecondary leading-snug">Watched first video</p>
         </div>
-
-        <!-- Badge 2: Locked -->
-        <div id="badge-streak" class="p-4 rounded-xl border border-cardBorder/40 opacity-40 grayscale text-center flex flex-col items-center justify-center space-y-2 transition-all">
-          <div class="text-xl">🔥</div>
+        <div class="p-4 rounded-xl border border-cardBorder opacity-40 grayscale text-center flex flex-col items-center justify-center space-y-2">
+          <div class="text-lg">🔥</div>
           <h4 class="font-bold text-[11px] text-textPrimary tracking-tight">Streak Starter</h4>
           <p class="text-[9px] text-textSecondary leading-snug">Studied 3 days in a row</p>
         </div>
-
-        <!-- Badge 3: Locked (can be unlocked dynamically) -->
-        <div id="badge-win" class="p-4 rounded-xl border border-cardBorder/40 opacity-40 grayscale text-center flex flex-col items-center justify-center space-y-2 transition-all">
-          <div class="text-xl">✨</div>
+        <div id="badge-win" class="p-4 rounded-xl border border-cardBorder opacity-40 grayscale text-center flex flex-col items-center justify-center space-y-2 transition-all">
+          <div class="text-lg">✨</div>
           <h4 class="font-bold text-[11px] text-textPrimary tracking-tight">Breakthrough Queen</h4>
-          <p class="text-[9px] text-textSecondary leading-snug">Shared win in the feed</p>
+          <p class="text-[9px] text-textSecondary leading-snug">Shared win in feed</p>
         </div>
-
-        <!-- Badge 4 -->
-        <div class="p-4 rounded-xl border border-cardBorder/40 opacity-40 grayscale text-center flex flex-col items-center justify-center space-y-2">
-          <div class="text-xl">🥇</div>
+        <div class="p-4 rounded-xl border border-cardBorder opacity-40 grayscale text-center flex flex-col items-center justify-center space-y-2">
+          <div class="text-lg">🥇</div>
           <h4 class="font-bold text-[11px] text-textPrimary tracking-tight">Super Student</h4>
           <p class="text-[9px] text-textSecondary leading-snug">Earned 100 points</p>
         </div>
-
-        <!-- Badge 5 -->
-        <div class="p-4 rounded-xl border border-cardBorder/40 opacity-40 grayscale text-center flex flex-col items-center justify-center space-y-2">
-          <div class="text-xl">🎓</div>
+        <div class="p-4 rounded-xl border border-cardBorder opacity-40 grayscale text-center flex flex-col items-center justify-center space-y-2">
+          <div class="text-lg">🎓</div>
           <h4 class="font-bold text-[11px] text-textPrimary tracking-tight">Graduated</h4>
           <p class="text-[9px] text-textSecondary leading-snug">Completed curriculum</p>
         </div>
@@ -155,105 +167,269 @@
     </div>
   </section>
 
-  <!-- Courses & Feed -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <!-- Courses -->
-    <div class="lg:col-span-2 space-y-6 text-left">
-      <h3 class="text-xs font-bold text-textSecondary uppercase tracking-wider">
-        📖 Your Learning Curriculum
-      </h3>
-      <div class="glass-panel overflow-hidden rounded-2xl border border-cardBorder/60 flex flex-col md:flex-row hover:border-cardBorder transition-all shadow-md group">
-        <div class="w-full md:w-48 h-36 relative bg-cardBg overflow-hidden shrink-0">
-          <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover" />
+  <!-- Courses Grid section -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    
+    <!-- Header control bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 text-left">
+      <h2 class="text-3xl font-bold font-display text-textPrimary">Courses</h2>
+      
+      <div class="flex flex-col sm:flex-row gap-3 flex-1 max-w-2xl justify-end">
+        <!-- Search bar -->
+        <div class="relative flex-1">
+          <svg class="absolute left-3.5 top-3.5 h-4.5 w-4.5 text-textSecondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input
+            id="courseSearchInput"
+            type="text"
+            placeholder="search by course title or description"
+            oninput="filterCourses()"
+            class="w-full pl-10 pr-4 py-3 bg-white border border-cardBorder rounded-xl text-xs text-textPrimary placeholder-textSecondary/70 focus:outline-none focus:border-plumAccent focus:ring-1 focus:ring-plumAccent transition-all shadow-sm"
+          />
         </div>
-        <div class="p-6 flex-1 flex flex-col justify-between">
-          <div>
-            <h4 class="font-display font-bold text-base text-textPrimary leading-snug">Align & Awaken: The Identity Shift Program</h4>
-            <p class="text-xs text-textSecondary leading-relaxed mt-1.5">
-              Premium 10-part masterclass re-wiring subconscious blocks and setting daily calibration routines.
-            </p>
-          </div>
-          <div class="pt-4 border-t border-cardBorder/40 mt-4 flex items-center justify-between">
-            <span class="text-[10px] font-semibold text-textSecondary uppercase">
-              3 Modules &bull; 10 Sessions
-            </span>
-            <a href="preview-player.html" class="px-4 py-1.5 bg-tealAccent text-background rounded-lg text-xs font-bold hover:bg-tealAccent/80 transition-all font-display">
-              Enter Course →
-            </a>
-          </div>
+        
+        <!-- Category selector -->
+        <div class="relative">
+          <select
+            id="courseCategorySelect"
+            onchange="filterCourses()"
+            class="appearance-none bg-white border border-cardBorder rounded-xl pl-4 pr-10 py-3 text-xs text-textPrimary focus:outline-none focus:border-plumAccent font-semibold shadow-sm cursor-pointer min-w-[160px]"
+          >
+            <option value="All">Course</option>
+            <option value="Paid">Premium</option>
+            <option value="Free">Free Access</option>
+          </select>
+          <svg class="absolute right-3.5 top-4 h-3 w-3 text-textSecondary pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+          </svg>
         </div>
       </div>
     </div>
 
-    <!-- Feed -->
-    <div class="space-y-6 text-left">
-      <h3 class="text-xs font-bold text-textSecondary uppercase tracking-wider">
-        💬 Breakthrough Feed
-      </h3>
-      <div class="glass-panel p-5 rounded-2xl border border-cardBorder/60 space-y-4">
-        <!-- Post Form -->
-        <form onsubmit="postWin(event)" class="space-y-3">
-          <textarea id="winText" placeholder="Had a realization or win today? Share it with the community..." required class="w-full bg-background/50 border border-cardBorder rounded-xl p-3 text-xs text-textPrimary placeholder-textSecondary focus:outline-none focus:border-tealAccent h-20 resize-none transition-all"></textarea>
-          <div class="flex items-center justify-between">
-            <span class="text-[10px] text-textSecondary">Wins reward +20 XP</span>
-            <button type="submit" class="px-3 py-1.5 bg-tealAccent text-background rounded-lg text-xs font-bold hover:bg-tealAccent/80 cursor-pointer">
-              Share win
-            </button>
+    <!-- Filter tags -->
+    <div class="flex flex-wrap gap-2 text-left" id="filterPillsContainer">
+      <button onclick="changePill('All', this)" class="pill-btn px-4 py-2 rounded-full border text-xs font-semibold transition-all border-plumAccent bg-plumAccent/10 text-plumAccent font-bold">All</button>
+      <button onclick="changePill('In Progress', this)" class="pill-btn px-4 py-2 rounded-full border text-xs font-semibold transition-all border-cardBorder bg-white text-textSecondary hover:border-textSecondary/50">In Progress</button>
+      <button onclick="changePill('Completed', this)" class="pill-btn px-4 py-2 rounded-full border text-xs font-semibold transition-all border-cardBorder bg-white text-textSecondary hover:border-textSecondary/50">Completed</button>
+      <button onclick="changePill('Expired', this)" class="pill-btn px-4 py-2 rounded-full border text-xs font-semibold transition-all border-cardBorder bg-white text-textSecondary hover:border-textSecondary/50">Expired</button>
+      <button onclick="changePill('Paid', this)" class="pill-btn px-4 py-2 rounded-full border text-xs font-semibold transition-all border-cardBorder bg-white text-textSecondary hover:border-textSecondary/50">Paid</button>
+      <button onclick="changePill('Service', this)" class="pill-btn px-4 py-2 rounded-full border text-xs font-semibold transition-all border-cardBorder bg-white text-textSecondary hover:border-textSecondary/50">Service</button>
+      <button onclick="changePill('Duration', this)" class="pill-btn px-4 py-2 rounded-full border text-xs font-semibold transition-all border-cardBorder bg-white text-textSecondary hover:border-textSecondary/50">Duration</button>
+    </div>
+
+    <!-- 3-Column courses grid matching the mockup screenshot -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="coursesGrid">
+      
+      <!-- Card 1 -->
+      <div class="course-card bg-white rounded-3xl border border-cardBorder shadow-sm p-4 hover:shadow-md transition-all duration-300 flex flex-col justify-between text-left group" data-title="Welcome to the VIP Circle" data-desc="Ritu Agarwal" data-type="Free" data-status="In Progress">
+        <div>
+          <!-- Thumbnail -->
+          <div class="aspect-video w-full rounded-2xl bg-[#FDFBF7] overflow-hidden relative mb-4 border border-cardBorder">
+            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop" alt="VIP Circle" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300" />
           </div>
-        </form>
+          <!-- Title & details -->
+          <h4 class="font-display font-bold text-base text-textPrimary leading-snug group-hover:text-plumAccent transition-colors">Welcome to the VIP Circle</h4>
+          <p class="text-xs text-textSecondary mt-1">Ritu Agarwal</p>
+          <span class="text-[10px] text-textSecondary font-semibold block mt-1.5">1 sections &bull; 1 lectures</span>
+        </div>
 
-        <div class="h-px bg-cardBorder/40 my-2"></div>
+        <div class="mt-4 pt-3 border-t border-cardBorder">
+          <!-- Progress bar -->
+          <div class="space-y-1.5 mb-4">
+            <div class="flex justify-between items-center text-[10px] font-bold text-textSecondary">
+              <span>Progress</span>
+              <span>17%</span>
+            </div>
+            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden border border-slate-200">
+              <div class="bg-emerald-500 h-full rounded-full transition-all" style="width: 17%"></div>
+            </div>
+          </div>
+          <a href="preview-player.html" class="w-full py-3 bg-plumAccent text-white hover:bg-plumAccent/90 rounded-xl text-xs font-bold text-center font-display tracking-wide block transition-all shadow-sm">
+            Continue
+          </a>
+        </div>
+      </div>
 
-        <!-- Feed List -->
-        <div id="feedList" class="space-y-3 max-h-[300px] overflow-y-auto pr-1">
-          <div class="p-3 bg-background/40 border border-cardBorder/30 rounded-xl space-y-1">
+      <!-- Card 2 -->
+      <div class="course-card bg-white rounded-3xl border border-cardBorder shadow-sm p-4 hover:shadow-md transition-all duration-300 flex flex-col justify-between text-left group" data-title="Energy Queens VIP Launchpad" data-desc="Ritu Agarwal" data-type="Paid" data-status="In Progress">
+        <div>
+          <!-- Thumbnail -->
+          <div class="aspect-video w-full rounded-2xl bg-[#FDFBF7] overflow-hidden relative mb-4 border border-cardBorder">
+            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop" alt="VIP Launchpad" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300" />
+          </div>
+          <!-- Title & details -->
+          <h4 class="font-display font-bold text-base text-textPrimary leading-snug group-hover:text-plumAccent transition-colors">Energy Queens VIP Launchpad</h4>
+          <p class="text-xs text-textSecondary mt-1">Ritu Agarwal</p>
+          <span class="text-[10px] text-textSecondary font-semibold block mt-1.5">2 sections &bull; 10 lectures</span>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-cardBorder">
+          <!-- Progress bar -->
+          <div class="space-y-1.5 mb-4">
+            <div class="flex justify-between items-center text-[10px] font-bold text-textSecondary">
+              <span>Progress</span>
+              <span>70%</span>
+            </div>
+            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden border border-slate-200">
+              <div class="bg-emerald-500 h-full rounded-full transition-all" style="width: 70%"></div>
+            </div>
+          </div>
+          <a href="preview-player.html" class="w-full py-3 bg-plumAccent text-white hover:bg-plumAccent/90 rounded-xl text-xs font-bold text-center font-display tracking-wide block transition-all shadow-sm">
+            Continue
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="course-card bg-white rounded-3xl border border-cardBorder shadow-sm p-4 hover:shadow-md transition-all duration-300 flex flex-col justify-between text-left group" data-title="Energy Queens VIP Stories" data-desc="Ritu Agarwal" data-type="Paid" data-status="Not Started">
+        <div>
+          <!-- Thumbnail -->
+          <div class="aspect-video w-full rounded-2xl bg-[#FDFBF7] overflow-hidden relative mb-4 border border-cardBorder">
+            <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=800&auto=format&fit=crop" alt="VIP Stories" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300" />
+            <span class="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-peachAccent/15 text-plumAccent text-[8px] font-bold uppercase tracking-wider border border-peachAccent/30">NEW</span>
+          </div>
+          <!-- Title & details -->
+          <h4 class="font-display font-bold text-base text-textPrimary leading-snug group-hover:text-plumAccent transition-colors">Energy Queens VIP Stories</h4>
+          <p class="text-xs text-textSecondary mt-1">Ritu Agarwal</p>
+          <span class="text-[10px] text-textSecondary font-semibold block mt-1.5">6 sections &bull; 49 lectures</span>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-cardBorder">
+          <a href="preview-player.html" class="w-full py-3 bg-plumAccent text-white hover:bg-plumAccent/90 rounded-xl text-xs font-bold text-center font-display tracking-wide block transition-all shadow-sm">
+            Start learning
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Breakthrough Feed -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 border-t border-cardBorder mt-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-8">
+      
+      <!-- Feed List (Cols 7) -->
+      <div class="lg:col-span-7 space-y-4 text-left">
+        <h3 class="text-xs font-bold text-textSecondary uppercase tracking-wider flex items-center gap-1.5">
+          💬 Breakthrough Feed
+        </h3>
+        
+        <div id="feedList" class="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+          <div class="p-4 bg-white border border-cardBorder rounded-xl space-y-1.5 shadow-sm">
             <div class="flex items-center justify-between">
               <span class="font-bold font-display text-[10px] text-textPrimary">Priya Sharma</span>
-              <span class="px-1.5 py-0.5 rounded bg-tealAccent/10 text-tealAccent text-[8px] font-bold uppercase">Student</span>
+              <span class="px-2 py-0.5 rounded bg-plumAccent/10 text-plumAccent text-[8px] font-bold uppercase tracking-wider">Student</span>
             </div>
-            <p class="text-[11px] text-textSecondary leading-relaxed italic">
+            <p class="text-xs text-textSecondary leading-relaxed italic">
               "Morning alignment sequences completely stopped my midday burnout stress!"
             </p>
           </div>
         </div>
       </div>
+
+      <!-- Share Form (Cols 5) -->
+      <div class="lg:col-span-5 space-y-4 text-left">
+        <h3 class="text-xs font-bold text-textSecondary uppercase tracking-wider flex items-center gap-1.5">
+          ✨ Share Your Breakthrough
+        </h3>
+        
+        <div class="glass-panel p-6 rounded-2xl border border-cardBorder space-y-4">
+          <form onsubmit="postWin(event)" class="space-y-3">
+            <textarea id="winText" placeholder="Had a realization or win today? Share it with the community..." required class="w-full bg-white border border-cardBorder rounded-xl p-3 text-xs text-textPrimary placeholder-textSecondary/70 focus:outline-none focus:border-plumAccent h-24 resize-none transition-all shadow-sm"></textarea>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] text-textSecondary">Wins reward +20 XP</span>
+              <button type="submit" class="px-4 py-2 bg-plumAccent text-white rounded-lg text-xs font-bold hover:bg-plumAccent/90 transition-all flex items-center gap-1 cursor-pointer shadow-sm">
+                Share Post
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
     </div>
-  </main>
+  </section>
 
   <script>
-    let userXP = 20;
+    let activeFilter = 'All';
 
+    // Interactive Pill Changing
+    function changePill(pillName, element) {
+      activeFilter = pillName;
+      
+      // Update pills styles
+      document.querySelectorAll('.pill-btn').forEach(btn => {
+        btn.className = "pill-btn px-4 py-2 rounded-full border text-xs font-semibold transition-all border-cardBorder bg-white text-textSecondary hover:border-textSecondary/50";
+      });
+      element.className = "pill-btn px-4 py-2 rounded-full border text-xs font-semibold transition-all border-plumAccent bg-plumAccent/10 text-plumAccent font-bold";
+      
+      filterCourses();
+    }
+
+    // Dynamic search & category filtering logic
+    function filterCourses() {
+      const searchVal = document.getElementById('courseSearchInput').value.toLowerCase();
+      const catVal = document.getElementById('courseCategorySelect').value;
+      const cards = document.querySelectorAll('.course-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const title = card.getAttribute('data-title').toLowerCase();
+        const desc = card.getAttribute('data-desc').toLowerCase();
+        const type = card.getAttribute('data-type');
+        const status = card.getAttribute('data-status');
+
+        // Check Search Matching
+        const matchesSearch = title.includes(searchVal) || desc.includes(searchVal);
+        // Check Category Matching
+        const matchesCat = catVal === 'All' || type === catVal;
+        // Check Pill Matching
+        let matchesPill = true;
+        if (activeFilter === 'In Progress') {
+          matchesPill = status === 'In Progress';
+        } else if (activeFilter === 'Completed') {
+          matchesPill = status === 'Completed';
+        } else if (activeFilter === 'Paid') {
+          matchesPill = type === 'Paid';
+        }
+
+        if (matchesSearch && matchesCat && matchesPill) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Add Breakthrough Post
+    let userXP = 20;
     function postWin(e) {
       e.preventDefault();
       const text = document.getElementById('winText').value.trim();
       if (!text) return;
 
-      // Add to feed list
       const feed = document.getElementById('feedList');
       feed.innerHTML = `
-        <div class="p-3 bg-background/40 border border-tealAccent/20 rounded-xl space-y-1 animate-pulse">
+        <div class="p-4 bg-white border border-cardBorder rounded-xl space-y-1.5 shadow-sm animate-pulse">
           <div class="flex items-center justify-between">
             <span class="font-bold font-display text-[10px] text-textPrimary">You (Student)</span>
-            <span class="px-1.5 py-0.5 rounded bg-tealAccent/10 text-tealAccent text-[8px] font-bold uppercase">Just Now</span>
+            <span class="px-2 py-0.5 rounded bg-plumAccent/10 text-plumAccent text-[8px] font-bold uppercase tracking-wider">Just Now</span>
           </div>
-          <p class="text-[11px] text-textSecondary leading-relaxed italic">
+          <p class="text-xs text-textSecondary leading-relaxed italic">
             "${text}"
           </p>
         </div>
       ` + feed.innerHTML;
 
-      // Reset text
       document.getElementById('winText').value = '';
-
-      // Increment points
       userXP += 20;
       document.getElementById('pointsXP').textContent = userXP + ' XP';
 
-      // Unlock "Breakthrough Queen" badge visually
       const winBadge = document.getElementById('badge-win');
-      winBadge.className = "p-4 rounded-xl border border-yellow-400/30 bg-background/40 shadow-lg text-center flex flex-col items-center justify-center space-y-2 text-yellow-400";
+      winBadge.className = "p-4 rounded-xl border border-goldAccent/30 bg-white shadow-sm peach-glow text-center flex flex-col items-center justify-center space-y-2 text-goldAccent";
 
-      alert('Post shared! You earned +20 XP. Check your updated points balance and the newly unlocked "Breakthrough Queen" badge above!');
+      alert('Breakthrough win posted! You earned +20 XP. Your "Breakthrough Queen" badge has been unlocked!');
     }
   </script>
 </body>

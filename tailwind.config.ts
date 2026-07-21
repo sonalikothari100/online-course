@@ -9,14 +9,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#0A192F",      // Deep serene navy background
-        cardBg: "#172A45",          // Slate blue for card backdrops
-        cardBorder: "#233554",      // Border for cards
-        tealAccent: "#64FFDA",      // Calming teal for active states and highlights
-        goldAccent: "#FFD700",      // Gold for points, badges, and streaks
-        textPrimary: "#CCD6F6",     // Soft off-white for primary text
-        textSecondary: "#8892B0",   // Grey-blue for subtitles and descriptions
-        success: "#10B981",         // Green for completed items
+        background: "#FDFBF7",      // Soft warm Alabaster background
+        cardBg: "#FFFFFF",          // Crisp white for card backdrops
+        cardBorder: "#F0E5F0",      // Soft plum-tinted borders
+        plumAccent: "#4A124A",      // Rich Deep Plum brand primary
+        peachAccent: "#F4B393",     // Sophisticated Peach brand secondary
+        tealAccent: "#0D9488",      // Teal blue for secondary highlights
+        goldAccent: "#D97706",      // Gold for points and streaks
+        textPrimary: "#1A0C1A",     // Espresso dark charcoal plum for readability
+        textSecondary: "#7C6C80",   // Warm grey-plum for descriptions
+        success: "#10B981",         // Green for success
       },
       fontFamily: {
         sans: ["var(--font-sans)", "Inter", "sans-serif"],

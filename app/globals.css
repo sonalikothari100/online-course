@@ -3,62 +3,72 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
-  background-color: #0A192F;
-  color: #CCD6F6;
+  background-color: #FDFBF7;
+  color: #1A0C1A;
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
 
-/* Glassmorphism panel styling */
+/* Glassmorphism panel styling in refined light mode */
 .glass-panel {
-  background: rgba(23, 42, 69, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(35, 53, 84, 0.5);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(74, 18, 74, 0.1);
+  box-shadow: 0 4px 30px rgba(244, 179, 147, 0.04);
 }
 
 .glass-card {
-  background: rgba(23, 42, 69, 0.45);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(35, 53, 84, 0.3);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(74, 18, 74, 0.06);
+  box-shadow: 0 2px 20px rgba(244, 179, 147, 0.02);
 }
 
-/* Custom Scrollbar for a premium dark look */
+/* Custom Scrollbar for a premium light look */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0A192F;
+  background: #FDFBF7;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #172A45;
+  background: #F0E5F0;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #233554;
+  background: #E8D3E8;
 }
 
-/* Glow effects */
+/* Soft glow effects */
+.plum-glow {
+  box-shadow: 0 0 20px rgba(74, 18, 74, 0.08);
+}
+
+.peach-glow {
+  box-shadow: 0 0 20px rgba(244, 179, 147, 0.15);
+}
+
 .teal-glow {
-  box-shadow: 0 0 20px rgba(100, 255, 218, 0.15);
+  box-shadow: 0 0 20px rgba(13, 148, 136, 0.12);
 }
 
 .gold-glow {
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+  box-shadow: 0 0 20px rgba(217, 119, 6, 0.12);
 }
 
 /* Tab animations */
 .tab-underline {
   height: 3px;
-  background-color: #64FFDA;
+  background-color: #4A124A;
   border-radius: 3px;
 }

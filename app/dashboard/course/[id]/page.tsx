@@ -109,7 +109,6 @@ export default function CoursePlayerPage({ params }: Params) {
   // Triggers video completion points and fires the auto-advance countdown
   const handleSimulateVideoCompletion = () => {
     if (user.completedLessons.includes(activeLesson.id)) {
-      // Already completed, just proceed to auto-advance countdown
       triggerAutoAdvance();
       return;
     }
@@ -122,7 +121,6 @@ export default function CoursePlayerPage({ params }: Params) {
         points: result.pointsAdded,
         badge: result.newBadgeUnlocked || undefined
       });
-      // Hide reward popup after 4 seconds
       setTimeout(() => {
         setRewardNotification(null);
         triggerAutoAdvance();
@@ -133,10 +131,9 @@ export default function CoursePlayerPage({ params }: Params) {
   };
 
   const triggerAutoAdvance = () => {
-    // Find next lesson
     const currentIdx = allLessons.findIndex(l => l.id === activeLesson.id);
     if (currentIdx !== -1 && currentIdx < allLessons.length - 1) {
-      setCountdown(3); // Start 3-second countdown
+      setCountdown(3);
     }
   };
 
@@ -168,12 +165,12 @@ export default function CoursePlayerPage({ params }: Params) {
 
     db.addTestimonial({
       clientName: user.fullName,
-      textContent: `[Win on Lesson: ${activeLesson.title}] ${breakthroughText}`,
+      textContent: breakthroughText,
       rating: 5,
       role: 'Academy Student'
     });
 
-    user.points += 20; // +20 points for sharing breakthrough
+    user.points += 20;
     if (!user.badges.includes('breakthrough_queen')) {
       user.badges.push('breakthrough_queen');
     }
@@ -182,132 +179,121 @@ export default function CoursePlayerPage({ params }: Params) {
 
     setBreakthroughText('');
     setBreakthroughSuccess(true);
-    setTimeout(() => setBreakthroughSuccess(false), 2500);
+    setTimeout(() => {
+      setBreakthroughSuccess(false);
+    }, 3000);
   };
 
   const handleRecordVideoBreakthrough = () => {
     setIsSimulatingVideoRecord(true);
     setTimeout(() => {
       setIsSimulatingVideoRecord(false);
-      db.addTestimonial({
-        clientName: user.fullName,
-        textContent: `[Video Win on Lesson: ${activeLesson.title}] Shared direct camera video breakthrough.`,
-        videoUrl: 'https://www.youtube.com/embed/EngW7tLk6R8', // Mock video
-        rating: 5,
-        role: 'Academy Student'
-      });
-
-      user.points += 30; // +30 points for video breakthroughs
-      if (!user.badges.includes('breakthrough_queen')) {
-        user.badges.push('breakthrough_queen');
+      user.points += 30; // +30 points for recording video win
+      if (!user.badges.includes('alignment_champion')) {
+        user.badges.push('alignment_champion');
       }
       db.updateUser(user);
       refreshUser();
-
+      
       setBreakthroughSuccess(true);
-      setTimeout(() => setBreakthroughSuccess(false), 2500);
-    }, 3000); // 3 seconds camera simulation
+      setTimeout(() => {
+        setBreakthroughSuccess(false);
+      }, 3000);
+    }, 3000);
   };
 
   return (
-    <div className="min-h-screen bg-background text-textPrimary relative flex flex-col">
-      {/* 1. Header */}
-      <header className="h-16 border-b border-cardBorder/40 bg-background/80 backdrop-blur-md px-4 flex items-center justify-between sticky top-0 z-30">
-        <div className="flex items-center gap-3">
-          <Link href="/dashboard" className="p-2 hover:bg-cardBg rounded-lg text-textSecondary hover:text-textPrimary transition-colors">
-            <ChevronLeft className="h-5 w-5" />
-          </Link>
-          <div className="text-left">
-            <span className="text-[10px] font-bold text-tealAccent uppercase tracking-widest block">Active Course</span>
-            <h1 className="font-display font-bold text-sm sm:text-base text-textPrimary truncate max-w-[200px] sm:max-w-md">
-              {course.title}
-            </h1>
+    <div className="min-h-screen bg-background text-textPrimary flex flex-col font-sans">
+      
+      {/* 1. Header with Course Navigation */}
+      <header className="sticky top-0 z-40 w-full border-b border-cardBorder bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Link 
+              href="/dashboard"
+              className="p-2 hover:bg-slate-105 rounded-lg text-textSecondary hover:text-textPrimary transition-all"
+            >
+              <ChevronLeft className="h-5 w-5 text-plumAccent" />
+            </Link>
+            <div className="text-left">
+              <h3 className="font-bold text-sm text-textPrimary leading-tight">{course.title}</h3>
+              <p className="text-[10px] text-textSecondary">Lesson: {activeLesson.title}</p>
+            </div>
           </div>
-        </div>
 
-        {/* Dynamic Progress indicator */}
-        <div className="flex items-center gap-4">
-          <div className="hidden md:block text-right">
-            <span className="text-xs font-semibold text-textSecondary">{progressPercent}% Completed</span>
-            <div className="w-32 bg-cardBorder h-1.5 rounded-full overflow-hidden mt-1 border border-cardBorder/30">
+          {/* Overall Course Progress Indicator */}
+          <div className="flex items-center gap-3">
+            <div className="text-right hidden sm:block">
+              <span className="text-[10px] font-bold text-textSecondary uppercase block">Overall Progress</span>
+              <span className="text-xs font-bold text-plumAccent">{progressPercent}% Completed</span>
+            </div>
+            <div className="w-24 bg-slate-100 h-2 rounded-full overflow-hidden border border-slate-250">
               <div 
-                className="bg-tealAccent h-full rounded-full transition-all duration-500" 
+                className="bg-emerald-500 h-full rounded-full transition-all duration-500" 
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
           </div>
-          <span className="h-8 w-px bg-cardBorder/40 hidden md:block" />
-          <div className="flex items-center gap-1 bg-goldAccent/10 text-goldAccent border border-goldAccent/20 px-3 py-1 rounded-full text-xs font-semibold">
-            <Trophy className="h-3.5 w-3.5" />
-            <span>{user.points} XP</span>
-          </div>
         </div>
       </header>
 
-      {/* 2. Main Split Grid */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden relative">
+      {/* 2. Master Grid Layout */}
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 max-w-7xl w-full mx-auto relative items-stretch">
         
-        {/* Left Side: Video & Under Player Interaction (Cols 8) */}
-        <div className="lg:col-span-8 flex flex-col h-full overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
+        {/* Left Side: Video & Under-Player Tabs (Cols 8) */}
+        <div className="lg:col-span-8 p-4 sm:p-6 space-y-6 flex flex-col justify-start">
           
-          {/* Main Video Box */}
-          <div className="relative w-full aspect-video rounded-2xl bg-cardBg overflow-hidden border border-cardBorder shadow-xl group">
+          {/* Simulated Video Player */}
+          <div className="relative w-full aspect-video rounded-3xl bg-slate-900 overflow-hidden shadow-lg border border-cardBorder">
             
-            {/* Auto advance Countdown overlay */}
+            {/* Auto advance overlay */}
             {countdown !== null && (
-              <div className="absolute inset-0 z-20 bg-background/90 backdrop-blur-md flex flex-col items-center justify-center text-center space-y-4">
-                <Sparkles className="h-10 w-10 text-tealAccent animate-spin-slow" />
-                <h3 className="font-display font-bold text-xl text-textPrimary">Session Completed!</h3>
-                <p className="text-sm text-textSecondary">
-                  Next video starting in <span className="font-bold text-tealAccent text-lg">{countdown}</span> seconds...
-                </p>
+              <div className="absolute inset-0 bg-background/95 backdrop-blur-sm z-30 flex flex-col items-center justify-center text-center p-4">
+                <span className="text-[10px] font-bold text-plumAccent uppercase tracking-widest animate-pulse">Session Finished</span>
+                <h3 className="text-2xl font-bold font-display text-textPrimary mt-2">Next Lesson Starts in {countdown}...</h3>
                 <button 
                   onClick={loadNextLesson}
-                  className="px-4 py-2 bg-tealAccent text-background rounded-lg text-xs font-bold hover:bg-tealAccent/80 transition-all font-display cursor-pointer"
+                  className="mt-4 px-6 py-2.5 bg-plumAccent text-white hover:bg-plumAccent/90 rounded-xl text-xs font-bold transition-all shadow-md"
                 >
-                  Skip Countdown
+                  Play Next Immediately
                 </button>
               </div>
             )}
 
-            {/* Video completed reward notification overlay */}
+            {/* Reward Points notification popups */}
             {rewardNotification && (
-              <div className="absolute inset-x-4 top-4 z-20 glass-panel p-4 rounded-xl border-success/30 flex items-center justify-between text-left animate-bounce">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-success/20 text-success flex items-center justify-center">
-                    <CheckCircle className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-xs text-textPrimary">Lesson Fully Complete!</h4>
-                    <p className="text-[10px] text-textSecondary">
-                      Earned +{rewardNotification.points} points. 
-                      {rewardNotification.badge && ` Unlocked "${rewardNotification.badge.name}" Badge!`}
-                    </p>
-                  </div>
+              <div className="absolute top-4 left-4 right-4 z-30 p-4 bg-white border border-goldAccent/30 rounded-2xl shadow-2xl flex items-center gap-3 animate-bounce">
+                <div className="h-10 w-10 rounded-full bg-goldAccent/10 text-goldAccent flex items-center justify-center font-bold">
+                  +{rewardNotification.points}
                 </div>
-                {rewardNotification.badge && (
-                  <div className="h-10 w-10 rounded-lg border border-goldAccent/30 flex items-center justify-center text-goldAccent bg-goldAccent/10">
-                    <Award className="h-6 w-6" />
-                  </div>
-                )}
+                <div className="text-left flex-1">
+                  <h4 className="font-bold text-xs text-textPrimary">Well Done, sister!</h4>
+                  <p className="text-[10px] text-textSecondary">You earned {rewardNotification.points} XP for finishing this lesson.</p>
+                  {rewardNotification.badge && (
+                    <span className="inline-block mt-1 text-[9px] bg-goldAccent/10 text-goldAccent font-bold px-2 py-0.5 rounded-full border border-goldAccent/25">
+                      🏆 Badge Unlocked: {rewardNotification.badge.name}
+                    </span>
+                  )}
+                </div>
               </div>
             )}
 
-            <iframe
+            {/* Custom styled video frame */}
+            <iframe 
               src={activeLesson.videoUrl}
               title={activeLesson.title}
-              className="w-full h-full border-0"
+              className="w-full h-full border-0 absolute inset-0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
 
-            {/* Simulated Playback complete button for demonstration since iFrames don't bubble events locally */}
+            {/* Simulated play complete trigger */}
             <div className="absolute bottom-4 right-4 z-10">
               <button 
                 onClick={handleSimulateVideoCompletion}
-                className="px-3 py-1.5 bg-background/80 hover:bg-background border border-cardBorder text-tealAccent hover:text-tealAccent/80 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer"
+                className="px-3 py-1.5 bg-white/90 hover:bg-white border border-cardBorder text-plumAccent hover:text-plumAccent/80 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer shadow-sm"
               >
-                <CheckCircle className="h-3.5 w-3.5" />
+                <CheckCircle className="h-3.5 w-3.5 text-plumAccent" />
                 Simulate Video Finished
               </button>
             </div>
@@ -315,7 +301,7 @@ export default function CoursePlayerPage({ params }: Params) {
 
           {/* Under Player Tabs */}
           <div className="space-y-4 text-left">
-            <div className="flex border-b border-cardBorder/40 gap-6">
+            <div className="flex border-b border-cardBorder gap-6">
               {[
                 { id: 'resources', label: 'Resources', icon: FileDown },
                 { id: 'comments', label: 'Comments', icon: MessageSquare },
@@ -325,9 +311,9 @@ export default function CoursePlayerPage({ params }: Params) {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`pb-3 text-xs font-semibold uppercase tracking-wider relative flex items-center gap-1.5 transition-all duration-300 ${
+                  className={`pb-3 text-xs font-semibold uppercase tracking-wider relative flex items-center gap-1.5 transition-all duration-300 cursor-pointer ${
                     activeTab === tab.id 
-                      ? 'text-tealAccent' 
+                      ? 'text-plumAccent font-bold' 
                       : 'text-textSecondary hover:text-textPrimary'
                   }`}
                 >
@@ -340,8 +326,8 @@ export default function CoursePlayerPage({ params }: Params) {
               ))}
             </div>
 
-            {/* Tab content area */}
-            <div className="min-h-[150px] p-5 bg-cardBg/30 border border-cardBorder/40 rounded-2xl">
+            {/* Tab content container */}
+            <div className="min-h-[150px] p-5 bg-white border border-cardBorder rounded-2xl shadow-sm">
               
               {/* Tab: Resources */}
               {activeTab === 'resources' && (
@@ -350,26 +336,26 @@ export default function CoursePlayerPage({ params }: Params) {
                   <p className="text-xs text-textSecondary leading-relaxed">{activeLesson.description}</p>
                   
                   {activeLesson.resources.length > 0 ? (
-                    <div className="space-y-2 pt-4 border-t border-cardBorder/40">
+                    <div className="space-y-2 pt-4 border-t border-cardBorder">
                       <h5 className="font-bold text-xs text-textPrimary uppercase tracking-wider">Lesson Attachments</h5>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {activeLesson.resources.map((res, i) => (
                           <a 
                             key={i}
                             href={res.url}
-                            className="p-3 bg-background/40 hover:bg-background border border-cardBorder/60 rounded-xl flex items-center justify-between text-xs text-textSecondary hover:border-tealAccent/20 transition-all"
+                            className="p-3 bg-slate-50 hover:bg-slate-100 border border-cardBorder rounded-xl flex items-center justify-between text-xs text-textSecondary hover:border-plumAccent/30 transition-all shadow-sm"
                           >
                             <span className="flex items-center gap-2 text-textPrimary">
-                              <FileDown className="h-4 w-4 text-tealAccent" />
+                              <FileDown className="h-4 w-4 text-plumAccent" />
                               {res.name}
                             </span>
-                            <span className="text-[10px] text-tealAccent uppercase font-bold">Download</span>
+                            <span className="text-[10px] text-plumAccent uppercase font-bold">Download</span>
                           </a>
                         ))}
                       </div>
                     </div>
                   ) : (
-                    <p className="text-xs text-textSecondary italic pt-4 border-t border-cardBorder/40">No resource downloads for this lesson.</p>
+                    <p className="text-xs text-textSecondary italic pt-4 border-t border-cardBorder">No resource downloads for this lesson.</p>
                   )}
                 </div>
               )}
@@ -383,20 +369,20 @@ export default function CoursePlayerPage({ params }: Params) {
                       placeholder="Add a comment or ask a question..."
                       value={newComment}
                       onChange={(e) => setNewComment(e.target.value)}
-                      className="flex-1 bg-background/50 border border-cardBorder rounded-xl p-3 text-xs text-textPrimary placeholder-textSecondary focus:outline-none focus:border-tealAccent transition-all"
+                      className="flex-1 bg-slate-50 border border-cardBorder rounded-xl p-3 text-xs text-textPrimary placeholder-textSecondary/70 focus:outline-none focus:border-plumAccent transition-all shadow-sm"
                     />
                     <button 
                       type="submit"
                       disabled={!newComment.trim()}
-                      className="px-4 bg-tealAccent text-background disabled:opacity-40 disabled:cursor-not-allowed rounded-xl text-xs font-bold hover:bg-tealAccent/80 transition-all flex items-center justify-center cursor-pointer"
+                      className="px-4 bg-plumAccent text-white disabled:opacity-40 disabled:cursor-not-allowed rounded-xl text-xs font-bold hover:bg-plumAccent/90 transition-all flex items-center justify-center cursor-pointer shadow-sm"
                     >
-                      <Send className="h-3.5 w-3.5" />
+                      <Send className="h-3.5 w-3.5 text-white" />
                     </button>
                   </form>
 
-                  <div className="space-y-3 pt-4 border-t border-cardBorder/40">
+                  <div className="space-y-3 pt-4 border-t border-cardBorder">
                     {comments.map((comm) => (
-                      <div key={comm.id} className="p-3 bg-background/30 border border-cardBorder/30 rounded-xl space-y-1 text-left">
+                      <div key={comm.id} className="p-3 bg-slate-50 border border-cardBorder rounded-xl space-y-1 text-left shadow-sm">
                         <div className="flex items-center justify-between">
                           <span className="font-bold font-display text-[10px] text-textPrimary">{comm.name}</span>
                           <span className="text-[9px] text-textSecondary">{comm.date}</span>
@@ -417,26 +403,25 @@ export default function CoursePlayerPage({ params }: Params) {
                   </p>
 
                   {breakthroughSuccess && (
-                    <div className="p-3 text-xs bg-success/10 border border-success/30 text-success rounded-xl flex items-center gap-1">
+                    <div className="p-3 text-xs bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl flex items-center gap-1">
                       <CheckCircle className="h-4 w-4" /> Win submitted! Points and achievements updated.
                     </div>
                   )}
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                    
                     {/* Text Breakthrough */}
-                    <form onSubmit={handleBreakthroughSubmit} className="space-y-2 text-left border-b md:border-b-0 md:border-r border-cardBorder/40 pb-4 md:pb-0 md:pr-4">
+                    <form onSubmit={handleBreakthroughSubmit} className="space-y-2 text-left border-b md:border-b-0 md:border-r border-cardBorder pb-4 md:pb-0 md:pr-4">
                       <label className="text-[10px] font-bold text-textSecondary uppercase tracking-wider block">Write your Breakthrough</label>
                       <textarea 
                         placeholder="What shifted for you during this session?"
                         value={breakthroughText}
                         onChange={(e) => setBreakthroughText(e.target.value)}
-                        className="w-full bg-background/50 border border-cardBorder rounded-xl p-3 text-xs text-textPrimary placeholder-textSecondary focus:outline-none focus:border-tealAccent h-24 resize-none transition-all"
+                        className="w-full bg-slate-50 border border-cardBorder rounded-xl p-3 text-xs text-textPrimary placeholder-textSecondary/70 focus:outline-none focus:border-plumAccent h-24 resize-none transition-all shadow-sm"
                       />
                       <button
                         type="submit"
                         disabled={!breakthroughText.trim()}
-                        className="px-4 py-2 bg-tealAccent text-background rounded-lg text-xs font-bold hover:bg-tealAccent/80 transition-all flex items-center gap-1 cursor-pointer"
+                        className="px-4 py-2 bg-plumAccent text-white rounded-lg text-xs font-bold hover:bg-plumAccent/90 transition-all flex items-center gap-1 cursor-pointer shadow-sm"
                       >
                         Submit Win (+20 XP)
                       </button>
@@ -445,22 +430,21 @@ export default function CoursePlayerPage({ params }: Params) {
                     {/* Video win */}
                     <div className="space-y-3 flex flex-col justify-center text-left">
                       <label className="text-[10px] font-bold text-textSecondary uppercase tracking-wider block">Record Video win</label>
-                      <p className="text-[11px] text-textSecondary">Use your webcam to record a quick 60-second win directly onto your page feed.</p>
+                      <p className="text-[11px] text-textSecondary font-display">Use your webcam to record a quick 60-second win directly onto your page feed.</p>
                       
                       <button
                         onClick={handleRecordVideoBreakthrough}
                         disabled={isSimulatingVideoRecord}
                         className={`py-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                           isSimulatingVideoRecord 
-                            ? 'bg-goldAccent/10 text-goldAccent border-goldAccent/40 animate-pulse'
-                            : 'bg-goldAccent text-background hover:bg-goldAccent/80 border-goldAccent shadow-lg gold-glow'
+                            ? 'bg-peachAccent/10 text-plumAccent border-peachAccent/40 animate-pulse font-semibold'
+                            : 'bg-peachAccent text-plumAccent hover:bg-peachAccent/80 border-peachAccent shadow-sm peach-glow font-bold'
                         }`}
                       >
-                        <Sparkles className="h-4 w-4" />
+                        <Sparkles className="h-4 w-4 text-plumAccent" />
                         {isSimulatingVideoRecord ? 'Recording from camera...' : 'Record Video Win (+30 XP)'}
                       </button>
                     </div>
-
                   </div>
                 </div>
               )}
@@ -478,11 +462,11 @@ export default function CoursePlayerPage({ params }: Params) {
                           key={b.id} 
                           className={`p-3 rounded-xl border flex items-center gap-2.5 text-left ${
                             unlocked 
-                              ? `${b.color} bg-background/30 shadow-md`
-                              : 'border-cardBorder/40 opacity-30 grayscale'
+                              ? 'border-peachAccent/40 bg-slate-50 shadow-sm peach-glow'
+                              : 'border-cardBorder opacity-30 grayscale'
                           }`}
                         >
-                          <div className="h-8 w-8 rounded-full bg-background flex items-center justify-center shrink-0">
+                          <div className="h-8 w-8 rounded-full bg-white border border-cardBorder flex items-center justify-center shrink-0 text-peachAccent shadow-sm">
                             <Award className="h-5 w-5" />
                           </div>
                           <div>
@@ -502,19 +486,19 @@ export default function CoursePlayerPage({ params }: Params) {
         </div>
 
         {/* Right Side: Syllabus Sidebar (Cols 4) */}
-        <div className="lg:col-span-4 border-t lg:border-t-0 lg:border-l border-cardBorder/40 bg-cardBg/15 flex flex-col h-full overflow-y-auto">
-          <div className="p-4 border-b border-cardBorder/40 text-left">
-            <span className="text-[10px] font-bold text-textSecondary uppercase tracking-widest flex items-center gap-1.5">
-              <BookOpen className="h-4 w-4 text-tealAccent" /> Course Curriculum Outline
+        <div className="lg:col-span-4 border-t lg:border-t-0 lg:border-l border-cardBorder bg-white flex flex-col h-full overflow-y-auto">
+          <div className="p-4 border-b border-cardBorder text-left">
+            <span className="text-[10px] font-bold text-textSecondary uppercase tracking-widest flex items-center gap-1.5 font-display">
+              <BookOpen className="h-4 w-4 text-plumAccent" /> Course Curriculum Outline
             </span>
           </div>
 
           <div className="p-2 space-y-4 overflow-y-auto flex-1">
             {course.modules.map((mod, modIdx) => (
               <div key={mod.id} className="space-y-1.5 text-left">
-                <div className="px-3 py-2 bg-background/50 rounded-lg border border-cardBorder/40">
+                <div className="px-3 py-2 bg-slate-50 rounded-lg border border-cardBorder">
                   <h4 className="font-display font-bold text-xs text-textPrimary flex items-center gap-2">
-                    <span className="h-5 w-5 rounded bg-tealAccent/10 text-tealAccent text-[10px] flex items-center justify-center font-bold">
+                    <span className="h-5 w-5 rounded bg-plumAccent/10 text-plumAccent text-[10px] flex items-center justify-center font-bold">
                       {modIdx + 1}
                     </span>
                     {mod.title}
@@ -529,22 +513,22 @@ export default function CoursePlayerPage({ params }: Params) {
                       <button
                         key={les.id}
                         onClick={() => handleLessonSelect(les)}
-                        className={`w-full p-3 rounded-xl border flex items-center justify-between text-xs transition-all ${
+                        className={`w-full p-3 rounded-xl border flex items-center justify-between text-xs transition-all cursor-pointer ${
                           isActive 
-                            ? 'bg-tealAccent/15 border-tealAccent/30 text-tealAccent' 
-                            : 'bg-cardBg/25 border-cardBorder/30 text-textSecondary hover:border-cardBorder/60 hover:text-textPrimary'
+                            ? 'bg-plumAccent/10 border-plumAccent/30 text-plumAccent font-bold' 
+                            : 'bg-white border-cardBorder text-textSecondary hover:border-cardBorder/80 hover:text-textPrimary'
                         }`}
                       >
                         <div className="flex items-center gap-2 truncate mr-2">
                           {isCompleted ? (
-                            <CheckCircle className="h-4 w-4 text-success shrink-0" />
+                            <CheckCircle className="h-4 w-4 text-emerald-600 shrink-0" />
                           ) : (
                             <CircleDot className="h-4 w-4 text-textSecondary/40 shrink-0" />
                           )}
                           <span className="font-medium truncate">{les.title}</span>
                         </div>
-                        <span className="text-[10px] bg-background border border-cardBorder px-1.5 py-0.5 rounded flex items-center gap-1 whitespace-nowrap shrink-0 text-textSecondary">
-                          <Clock className="h-3 w-3" /> {les.duration}
+                        <span className="text-[10px] bg-slate-50 border border-cardBorder px-1.5 py-0.5 rounded flex items-center gap-1 whitespace-nowrap shrink-0 text-textSecondary font-semibold">
+                          <Clock className="h-3 w-3" /> {les.duration}m
                         </span>
                       </button>
                     );
